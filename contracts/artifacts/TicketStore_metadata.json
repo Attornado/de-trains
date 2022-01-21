@@ -1074,11 +1074,11 @@
 			]
 		},
 		"contracts/TicketStore.sol": {
-			"keccak256": "0x61f159fc139a28560036094d08099a24c9d2c779fc7c1f09f0e73be22afb4c59",
+			"keccak256": "0xc20de5c8c32ebeb0cf69df87e79e174825354b50413d2228115f6ecf37588cca",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e8eaa12d31d5c74698427095bda77753c48d9cba1ddd0f0acff98c4abd12463f",
-				"dweb:/ipfs/QmfXLLfELiSmEQsQv64Ambn2RjFCE2166htJdzhoowLxa1"
+				"bzz-raw://fe30e42ce4ac5bcfe854fd8ae79aa6ad8a6f5ba6c8840d7403d6c68584c2eecb",
+				"dweb:/ipfs/QmdBN2mZaX3L6zBMQ4mNyU86gvLbLTC5wgGwzzcu5yBu5q"
 			]
 		}
 	},
