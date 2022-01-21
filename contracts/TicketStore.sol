@@ -88,7 +88,6 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     }
 
     // Other functions 
-
     function buyTicket(address buyer, string memory ticketURI, int stationNum, string memory startStation,
      string memory endStation, uint256 date)  public payable returns (uint256) {
         uint256 paidAmount = msg.value;
