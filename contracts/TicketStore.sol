@@ -48,7 +48,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     event RefundTicket(uint256 ticketId, address user, uint256 refundedAmount);
     event UseTicket(uint256 ticketId, address ownerAccount, address usageSetter);
 
-    // AccessControl modifier and permiossion-checking function definition
+    // AccessControl modifier and permission-checking function definition
     modifier soloAdmins() {
         emit ChecksoloAdmins(msg.sender);
         require(isAdmin(msg.sender), "Caller is not an admin account!");
