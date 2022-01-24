@@ -26,7 +26,7 @@ $(document).ready(function(){
 
 	for(i = 0; i < stations.length ; i++){
 
- 		startSelect.options[startSelect.options.length] = new Option(stations[i] + " ("+ i+ ")"  , i);
+ 		startSelect.options[startSelect.options.length] = new Option(stations[i] + " ("+ i+ ")"  , stations[i]);
  		
 
  	}
@@ -58,6 +58,13 @@ function populateStation(){
 
 }
 
+function findNumOfStation(station){
+
+	return stations.indexOf(station);
+
+
+}
+
 $(function(){
         $('#startSelect option').click(function(){
 
@@ -65,9 +72,9 @@ $(function(){
 
        	$("#endSelect").empty();
 
-        for (i = parseInt($(this).val())+1 ; i< stations.length ; i++)
+        for (i = findNumOfStation($(this).val())+1 ; i< stations.length ; i++)
         
-        	endSelect.options[endSelect.options.length] = new Option(stations[i] + " ("+ i+ ")"  , i);
+        	endSelect.options[endSelect.options.length] = new Option(stations[i] + " ("+ i+ ")"  , stations[i]);
 
         });
 
@@ -84,8 +91,8 @@ $('#startSelect').click(function () {
 
 $('#endSelect').change(function () {   
    
-	var firstValue = $("#endSelect").val();
-	var secondValue = $("#startSelect").val();
+	var firstValue = findNumOfStation($("#endSelect").val());
+	var secondValue = findNumOfStation($("#startSelect").val());
 	var numberOfStationCrossed = firstValue - secondValue;
 	var price = "$ 1";
 
@@ -96,6 +103,8 @@ $('#endSelect').change(function () {
 			price = "$ 3";
 
 	$("#price").text(price);
+
+	$('#hiddenNumStation').val(numberOfStationCrossed);
 
 	$('#buyButton').prop('disabled', false);
 
