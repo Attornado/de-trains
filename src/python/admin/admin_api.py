@@ -79,5 +79,5 @@ def register_ticket_usage_setter():
         return jsonify({"message": "Usage setter role removed successfully to address: " + str(address)}), 200
     else:
         return jsonify({
-            "message": "Usage setter role renounce failed: you are not an admin or a usage setter!"
+            "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
         }), 400
