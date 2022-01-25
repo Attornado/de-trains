@@ -105,6 +105,10 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         }
     }
 
+    function nextId() public view returns (uint256){
+        return _ticketIds.current() + 1;
+    }
+
     function checkPaidAmount(uint256 paidAmount, int stationNum) private pure returns (bool){
         if(stationNum < MIN_STATION_MEDIUM && paidAmount == TICKET_PRICE_SHORT){
             return true;
