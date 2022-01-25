@@ -79,11 +79,12 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         grantRole(USAGE_SETTER_ROLE, to);
     }
 
-    function removeUsageSetterRole (address to) public soloUsageSetters {
+    function removeUsageSetterRole(address to) public soloUsageSetters {
+        require(isAdmin(msg.sender) || msg.sender == to); // sender must be an admin or the usage setter himself
         renounceRole(USAGE_SETTER_ROLE, to);
     }
 
-    function removeAdminRole (address to) public soloAdmins {
+    function removeAdminRole(address to) public soloAdmins {
         renounceRole(DEFAULT_ADMIN_ROLE, to);
     }
 
