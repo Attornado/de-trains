@@ -81,3 +81,21 @@ def register_ticket_usage_setter():
         return jsonify({
             "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
         }), 400
+
+@app.route("/admin/transfer_founds, methods=["GET"])
+def transfer_founds():
+    address = request.args.get('transfer_address')
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()
+
+        try:
+            contract.functions.removeUsageSetterRole(to=address).call()
+            contract.functions.removeUsageSetterRole(to=address).transact()  # Notarization
+        except exceptions.SolidityError as e:
+            return jsonify({"message": "Usage setter role assignation failed: " + str(e)}), 400
+
+            return jsonify({"message": "Usage setter role removed successfully to address: " + str(address)}), 200
+    else:
+        return jsonify({
+            "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
+        }), 400

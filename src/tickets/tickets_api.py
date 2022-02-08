@@ -30,10 +30,11 @@ def generate_code_url(tk_id: int, start_station: str, end_station: str, station_
 
 @app.route("/buy_ticket", methods=['GET'])
 def buy_ticket():
+    date = request.args.get("date")
     start_station = request.args.get('start_station')
     end_station = request.args.get('end_station')
     station_num: int = int(request.args.get('station_num'))
-    date = request.args.get("date")
+
 
     # generate QR code for ticket
     estimate_tk_id = contract.functions.nextId().call()

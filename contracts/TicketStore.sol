@@ -47,6 +47,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     event ChecksoloUsageSetters(address user);
     event RefundTicket(uint256 ticketId, address user, uint256 refundedAmount);
     event UseTicket(uint256 ticketId, address ownerAccount, address usageSetter);
+    event Transfer(address toTransfer);
 
     // AccessControl modifier and permission-checking function definition
     modifier soloAdmins() {
@@ -149,6 +150,14 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         // library function to send amounts to specified address, after which we emit a refund event
         owner.sendValue(ticketPrice);
         emit RefundTicket(ticketId, owner, ticketPrice);
+    }
+
+    function transfer(address payable addressToTransfer) public soloAdmins{
+
+        // library function to send amounts to specified address, after which we emit a refund event
+        addressToTransfer.sendValue(address(this).balance);
+        emit Transfer(addressToTransfer);
+
     }
 
     function useTicket(uint256 ticketId) public soloUsageSetters{

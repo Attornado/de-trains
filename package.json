@@ -16,6 +16,7 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.4.2",
     "@openzeppelin/test-helpers": "^0.5.15",
     "chai": "^4.3.4",
     "web3": "^1.6.0"
