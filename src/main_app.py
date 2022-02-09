@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import ipfsApi
@@ -183,7 +184,7 @@ def remove_ticket_usage_setter():
 
 def generate_ticket_uri(ticket_json):
     tk_id = json.loads(ticket_json)['id']
-    filename = 'ticket' + tk_id + '.json'
+    filename = 'ticket' + str(tk_id) + '.json'
     with open(filename, 'w') as outfile:
         outfile.write(ticket_json)
     api = ipfsApi.Client(IPFS_ADDRESS, IPFS_PORT)
@@ -194,8 +195,8 @@ def generate_ticket_uri(ticket_json):
 def generate_code_url(tk_id: int, start_station: str, end_station: str, station_num: int, date: str) -> str:
     filename = "static/assets/qr/qrcode.txt"
     api = ipfsApi.Client(IPFS_ADDRESS, IPFS_PORT)
-    res = api.add(filename)
-    return 'https://ipfs.io/ipfs/' + res['Hash']
+    res = api.add(filename)[0] # will create an ipfs file for all directories
+    return 'https://ipfs.io/ipfs/' + res['Hash'] # localhost:8086 o
 
 
 @app.route("/buy_ticket", methods=['GET'])
@@ -204,13 +205,19 @@ def buy_ticket():
     end_station = request.args.get('end_station')
     station_num: int = int(request.args.get('station_num'))
     date = request.args.get("date")
+    timestamp = int(datetime.datetime.timestamp(datetime.datetime.strptime(date, "%d/%m/%Y")))
 
     # generate QR code for ticket
     estimate_tk_id = contract.functions.nextId().call()
     contract.functions.nextId().transact()  # Notarization
 
-    url = generate_code_url(estimate_tk_id, start_station, end_station, station_num, date)
-    ticket = Ticket(start_station, end_station, station_num, date, url)
+    url = generate_code_url(
+        tk_id=estimate_tk_id, start_station=start_station, end_station=end_station, station_num=station_num, date=date
+    )
+    ticket = Ticket(
+        tk_id=estimate_tk_id, start_station=start_station, end_station=end_station,
+        station_num=station_num, date=date, url=url
+    )
     ticket_json = ticket.jsonify_light()
 
     ticket_uri = generate_ticket_uri(ticket_json)
@@ -221,7 +228,7 @@ def buy_ticket():
             stationNum=station_num,
             startStation=start_station,
             endStation=end_station,
-            date=date,
+            date=timestamp,
             ticketURI=ticket_uri
         ).call()
     except exceptions.SolidityError as e:
@@ -236,7 +243,7 @@ def buy_ticket():
         stationNum=station_num,
         startStation=start_station,
         endStation=end_station,
-        date=date,
+        date=timestamp,
         ticketURI=ticket_uri
     ).transact()
 

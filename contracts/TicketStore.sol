@@ -91,7 +91,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
     // Other misc functions 
     function buyTicket(address buyer, string memory ticketURI, int stationNum, string memory startStation,
-     string memory endStation, uint256 date)  public payable returns (uint256) {
+     string memory endStation, uint256 date) public payable returns (uint256) {
         uint256 paidAmount = msg.value;
         if (checkPaidAmount(paidAmount, stationNum) && date > block.timestamp){
             _ticketIds.increment();
@@ -154,7 +154,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
     function transfer(address payable addressToTransfer) public soloAdmins{
 
-        // library function to send amounts to specified address, after which we emit a refund event
+        // library function to send amounts to specified address, after which we emit a transfer event
         addressToTransfer.sendValue(address(this).balance);
         emit Transfer(addressToTransfer);
 
