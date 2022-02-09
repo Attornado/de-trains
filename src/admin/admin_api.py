@@ -82,6 +82,8 @@ def register_ticket_usage_setter():
             "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
         }), 400
 
+
+
 @app.route("/admin/transfer_founds, methods=["GET"])
 def transfer_founds():
     address = request.args.get('transfer_address')
