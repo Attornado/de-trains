@@ -24,7 +24,7 @@ web3.eth.defaultAccount = web3.eth.accounts[0]
 # Path to the compiled contract JSON file
 compiled_contract_path = '../build/contracts/TicketStore.json'
 # Deployed contract address (see `migrate` command output: `contract address`)
-deployed_contract_address = "0xaB64AD281B947CF30b60319e34268F3DAdAeD6AB"
+deployed_contract_address = "0xFad328e049a0a6492A1e0b9204F36aD3C3e63970"
 # Enable unaudited features
 web3.eth.account.enable_unaudited_hdwallet_features()
 
@@ -230,7 +230,7 @@ def buy_ticket():
             endStation=end_station,
             date=timestamp,
             ticketURI=ticket_uri
-        ).call()
+        ).call({"value": ticket.price_wei()})
     except exceptions.SolidityError as e:
         return jsonify({"message": "Ticket buy failed: " + str(e)}), 400
     if tk_id == 0:
@@ -245,7 +245,7 @@ def buy_ticket():
         endStation=end_station,
         date=timestamp,
         ticketURI=ticket_uri
-    ).transact()
+    ).transact({"value": ticket.price_wei()})
 
     ticket.id = tk_id
     ticket_json = ticket.jsonify_full()
@@ -253,9 +253,9 @@ def buy_ticket():
     return jsonify(response), 200
 
 
-@app.route("/refund", methods=['GET'])
+@app.route("/refund_ticket", methods=['GET'])
 def refund_ticket():
-    ticket_id = request.args.get('ticket_id')
+    ticket_id = int(request.args.get('ticket_id'))
 
     try:
         contract.functions.refund(ticketId=ticket_id).call()

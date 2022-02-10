@@ -43,6 +43,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
     // Event definition
     event Debug(address user, address sender, bytes32 role, bytes32 adminRole, bytes32 senderRole);
+    event DebugBuy(address buyer, uint256 amount, int stationNum, uint256 date, uint256 blocktimestamp);
     event ChecksoloAdmins(address user);
     event ChecksoloUsageSetters(address user);
     event RefundTicket(uint256 ticketId, address user, uint256 refundedAmount);
@@ -93,7 +94,9 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     function buyTicket(address buyer, string memory ticketURI, int stationNum, string memory startStation,
      string memory endStation, uint256 date) public payable returns (uint256) {
         uint256 paidAmount = msg.value;
-        if (checkPaidAmount(paidAmount, stationNum) && date > block.timestamp){
+        // subtract 1 day to allow same-day ticket purchase
+        emit DebugBuy(buyer, msg.value, stationNum, date, block.timestamp - 24*3600);
+        if (checkPaidAmount(paidAmount, stationNum) && date > block.timestamp - 24*3600){
             _ticketIds.increment();
             uint256 newTicketId = _ticketIds.current();
             _mint(buyer, newTicketId);
@@ -131,8 +134,8 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         // ticket has not to be already used
         require(!tickets[ticketId].used);
 
-        // ticket has to be not expired
-        require(tickets[ticketId].date <= block.timestamp); // we don't care if the miner can modify this by 900s
+        // ticket has to be not expired, and we don't care if the miner can modify this by 900s
+        require(tickets[ticketId].date > block.timestamp - 3600*24);
 
         // ticked has to be not refunded
         require(!tickets[ticketId].refunded);
@@ -164,8 +167,9 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         // ticket has not to be already used
         require(!tickets[ticketId].used);
 
-        // ticket has to be not expired
-        require(tickets[ticketId].date <= block.timestamp); // we don't care if the miner can modify this by 900s
+        // ticket has to be not expired, subtract 1 day to allow same-day ticket refunds, also we don't care if the
+        // miner can modify this by 900s
+        require(tickets[ticketId].date > block.timestamp - 3600*24);
 
         // ticked has to be not refunded
         require(!tickets[ticketId].refunded);
