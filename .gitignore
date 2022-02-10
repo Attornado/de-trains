@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 giggino.txt
-ticket*
+ticket*.json

@@ -1,6 +1,13 @@
 import json
 from datetime import datetime
 
+EURO_WEI = 370816960785710
+TICKET_PRICE_SHORT = EURO_WEI
+TICKET_PRICE_MEDIUM = 2 * EURO_WEI
+TICKET_PRICE_LONG = 3 * EURO_WEI
+MIN_STATION_MEDIUM = 5
+MIN_STATION_LONG = 13
+
 
 class Ticket:
     def __init__(self, start_station: str, end_station: str, station_num: int, date: str, url: str, tk_id: int = 0,
@@ -73,3 +80,13 @@ class Ticket:
 
     def jsonify_full(self):
         return json.dumps(self.__dict__)
+
+    def price_wei(self) -> int:
+        if self.station_num < MIN_STATION_MEDIUM:
+            return TICKET_PRICE_SHORT
+        elif MIN_STATION_MEDIUM <= self.station_num < MIN_STATION_LONG:
+            return TICKET_PRICE_MEDIUM
+        elif self.station_num >= MIN_STATION_LONG:
+            return TICKET_PRICE_LONG
+        return 0
+
