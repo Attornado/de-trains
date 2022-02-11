@@ -84,8 +84,9 @@ $(function(){
 
     });
 
-$('#startSelect').click(function () {  
+$('#startSelect').click(function () {
 
+	$("#hiddenNumStation").val(1);
 	$('#buyButton').prop('disabled', false);
 });
 
