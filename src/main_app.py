@@ -108,7 +108,7 @@ def login_mnemonic():
     return jsonify({"message": "Login successful!"}), 200
 
 
-@app.route("/show_admin_page", methods=["GET"])
+@app.route("/admin", methods=["GET"])
 def show_admin_page():
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
@@ -266,9 +266,9 @@ def refund_ticket():
         contract.functions.refund(ticketId=ticket_id).call()
         contract.functions.refund(ticketId=ticket_id).transact()  # Notarization
     except exceptions.SolidityError as e:
-        return jsonify({"message": "Ticket refund failed : " + str(e)}), 400
+        return jsonify({"message": "Ticket " + str(ticket_id) + " refund failed : " + str(e)}), 400
 
-    response = {"message": "Ticket refunded successfully!"}
+    response = {"message": "Ticket" + str(ticket_id) + " refunded successfully!"}
     return jsonify(response), 200
 
 
