@@ -80,12 +80,29 @@ $(function(){
 
         $("#price").text("$ 1");
 
-       
-
-    });
+		$("#buyButton").on("click", ev => {
+			ev.preventDefault();
+			$.ajax("buy_ticket?date=" + $("#daySelect").val() + "&start_station=" + $("#startSelect").val() +
+				"&end_station=" + $("#endSelect").val() + "&station_num=" + $("#hiddenNumStation").val(), {
+				method: "GET",
+				error: responseObject => {
+					let msg = responseObject.message;
+					let type = "error";
+					showPopupMessage(type, msg);
+				},
+				success: responseObject => {
+					let msg;
+					let ticket = JSON.parse(responseObject.ticket);
+					let ticketUri = responseObject.ticket_uri
+					msg = "Ticket bought successfully! Ticket id is: " + ticket.Ticket__id + "\nTicket URI is: " + ticketUri;
+					let type = "success";
+					showPopupMessage(type, msg);
+				}
+			});
+		});
+});
 
 $('#startSelect').click(function () {
-
 	$("#hiddenNumStation").val(1);
 	$('#buyButton').prop('disabled', false);
 });

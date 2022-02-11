@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i">
     <link rel="stylesheet" href="../static/assets/css/Animated-Pretty-Product-List-v12.css">
     <link rel="stylesheet" href="../static/assets/css/gift-product-small-double.css">
+    <link rel="stylesheet" href="../static/assets/css/popup.css">
 </head>
 
 <body style="background: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('../static/assets/img/bg.jpg');height: 957px;">
@@ -25,6 +26,7 @@
                     <li class="nav-item" role="presentation"><a class="nav-link" href="buy_product">Buy</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="refund">Refund</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="login">Login</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="admin">Admin</a></li>
                 </ul>
         </div>
         </div>
@@ -55,8 +57,7 @@
                             </label>
                             <div class="form-group">
                             	<select class="form-control pb-2" required="" name="end_station" id = "endSelect"></select></div>
-                                    <input
-                                        class="btn btn-primary btn-block" type="submit" value="PRENOTA" id = "buyButton" disabled></input>
+                                    <input class="btn btn-primary btn-block" type="submit" value="PRENOTA" id = "buyButton" disabled>
                                         <div class="form-row justify-content-center align-items-center align-content-center" style="margin: 26px;">
                                             <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);" id="price">$ 4.50</h4>
                                         </div>
@@ -67,12 +68,18 @@
                 </form>
             </div>
         </div>
+        <div class="popupBox">
+            <span class="closeButton">&times;</span>
+            <strong class="type"></strong> <!--riempito dinamicamente con lo pseudo-elemento ::after-->
+            <span class="msgContent">Default text.</span>
+        </div>
     </section>
     <footer class="footer text-faded text-center py-5">
         <div class="container">
             <p class="m-0 small">Copyright&nbsp;©&nbsp;Brand 2022</p>
         </div>
     </footer>
+    <script src="../static/assets/js/utility.js"></script>
     <script src="../static/assets/js/jquery.min.js"></script>
     <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/assets/js/Animated-Pretty-Product-List-v12.js"></script>

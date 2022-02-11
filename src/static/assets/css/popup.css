@@ -1,0 +1,77 @@
+/*Popup box styling inizio*/
+.popupBox {
+    padding: 20px;
+    color: white;
+    position: fixed;
+    margin: 0 1% 0 1%;
+    z-index: 1001;
+    background-color: cornflowerblue;
+    bottom: 10px; /*posizionato a 10px dal fondo pagina*/
+    left: 0;
+    right: 0;
+    display: none;
+    visibility: hidden;
+}
+
+.popupBox.visible {
+    display: block;
+    visibility: visible;
+}
+
+.popupBox.error-popup {
+    background-color: #c75450;
+}
+
+.popupBox.success-popup {
+    background-color: #4CAF50;
+}
+
+.popupBox.warning-popup {
+    background-color: #ff9800;
+}
+
+.popupBox.notice-popup {
+    background-color: cornflowerblue;
+}
+
+.popupBox .type{
+    visibility: hidden; /*Nascondiamo l'elemento e lo sostituiamo con il suo ::after*/
+}
+
+.popupBox .type::after {
+    visibility: visible;
+    top: 0;
+    left: 0;
+}
+
+.popupBox.success-popup .type::after {
+    content: "Success: ";
+}
+
+.popupBox.error-popup .type::after {
+    content: "Error: ";
+}
+
+.popupBox.warning-popup .type::after {
+    content: "Warning: ";
+}
+
+.popupBox.notice-popup .type::after {
+    content: "Notice: ";
+}
+
+.popupBox .closeButton {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 200%;
+    line-height: 18px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.popupBox .closeButton:hover {
+    color: black;
+}
+/*Popup box styling fine*/
