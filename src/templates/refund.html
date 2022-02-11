@@ -41,7 +41,7 @@
                             <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Rimborsa il biglietto</h4><label style="color: rgb(246,247,248);">ID</label>
                             <div class="form-group">
                                 <input class="form-control" type="text" pattern="[0-9]+" id="ticketId" name="ticket_id">
-                            </div><input class="btn btn-primary btn-block" id="refundBtn" type="submit">RIMBORSA</div>
+                            </div><button class="btn btn-primary btn-block" id="refundBtn" type="submit">RIMBORSA</button></div>
                         <div class="col text-center text-sm-center text-md-center text-lg-center text-xl-center"><img src="../static/assets/img/pngaaa.com-429027.png" style="width: 328px;margin: 57px;"><label>Label</label></div>
                     </div>
                 </form>
@@ -61,6 +61,7 @@
     <script src="../static/assets/js/utility.js"></script>
     <script>
         $("#refundBtn").on("click", ev => {
+            alert("dcc");
             ev.preventDefault();
             $.ajax("refund_ticket?ticket_id=" + $("#ticketId").val(), {
                 method: "GET",
