@@ -20,7 +20,7 @@
             <div
                 class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="nav navbar-nav mx-auto">
-                     <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="about">About us</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="products">Products</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="buy_product">Buy</a></li>
@@ -35,14 +35,25 @@
         <div class="container">
             <div class="product-item">
                 <div class="d-flex product-item-title"></div>
-                <form class="align-items-center" action="/refund_ticket" method="get">
+                <form class="align-items-center" style="margin: 0px;margin-top: 8px;">
                     <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
                         <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos">
-                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Rimborsa il biglietto</h4><label style="color: rgb(246,247,248);">ID</label>
-                            <div class="form-group">
-                                <input class="form-control" type="text" pattern="[0-9]+" id="ticketId" name="ticket_id">
-                            </div><button class="btn btn-primary btn-block" id="refundBtn" type="submit">RIMBORSA</button></div>
-                        <div class="col text-center text-sm-center text-md-center text-lg-center text-xl-center"><img src="../static/assets/img/pngaaa.com-429027.png" style="width: 328px;margin: 57px;"><label>Label</label></div>
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Promuovi Admin</h4><label style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group"><input class="form-control" id="address_to_admin" name="address_to_admin" type="text"></div><button class="btn btn-primary btn-block" id="promoteBtn" type="submit">PROMOTE</button></div>
+                    </div>
+                </form>
+                <form class="align-items-center" action="#azione usage ticket" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos1">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Crea ticket usage setter</h4><label style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group"><input class="form-control" id="ticket_to_use" name="ticket_to_use" type="text"></div><button class="btn btn-primary btn-block" id="useBtn" type="submit">USE</button></div>
+                    </div>
+                </form>
+                <form class="align-items-center" action="#azione_prelievo" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos2">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Preleva</h4><label style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group"><input class="form-control" id="address_to_deposit" name="address_to_deposit" type="text"></div><button id="withdrawBtn" class="btn btn-primary btn-block" type="submit">WITHDRAW</button></div>
                     </div>
                 </form>
             </div>
@@ -59,13 +70,12 @@
         </div>
     </footer>
     <script src="../static/assets/js/utility.js"></script>
-    <script>
-    </script>
     <script src="../static/assets/js/jquery.min.js"></script>
     <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/assets/js/Animated-Pretty-Product-List-v12.js"></script>
     <script src="../static/assets/js/current-day.js"></script>
-    <script src="../static/assets/js/refundRequest.js"></script>
+    <script src="../static/assets/js/formModifier.js"></script>
+    <script src="../static/assets/js/adminPage.js"></script>
 </body>
 
 </html>
