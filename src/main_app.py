@@ -79,6 +79,11 @@ def refund():
     return render_template('./refund.html')
 
 
+@app.route('/login')
+def login_page():
+    return render_template('./login.html')
+
+
 @app.route("/login_private_key", methods=["POST"])
 def login_private_key():
     params = request.form
@@ -88,7 +93,7 @@ def login_private_key():
         return jsonify({"message": "Account login failed!"}), 400
 
     web3.eth.defaultAccount = account.address
-    return jsonify({"message": "Login successful!"}), 200
+    return render_template('./index.html')
 
 
 @app.route("/login_mnemonic", methods=["POST"])

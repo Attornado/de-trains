@@ -33,13 +33,24 @@
         <div class="container">
             <div class="product-item">
                 <div class="d-flex product-item-title"></div>
-                <form class="align-items-center" action="/login_private_key" method="post">
+                <form class="align-items-center" action="/login_mnemonic" method="post">
                     <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
                         <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos">
-                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Log with your EHT account</h4><label style="color: rgb(246,247,248);">Mnemonic</label>
-                            <div class="form-group"><input class="form-control" name="" type="text"></div><input class="btn btn-primary btn-block" type="submit" value="LOG"></div>
-                        <div class="col text-center text-sm-center text-md-center text-lg-center text-xl-center"><img src="../static/assets/img/person.png" style="width: 328px;margin: 57px;"><label>Label</label></div>
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Log with your EHT account</h4><label for="mnemonic" style="color: rgb(246,247,248);">Mnemonic</label>
+                            <div class="form-group"><input id="mnemonic" class="form-control" name="mnemonic" pattern="[a-z]+\s[a-z]+(\s[a-z]+)*" type="text"></div><input class="btn btn-primary btn-block" type="submit" value="LOG"></div>
+                        <div class="col text-center text-sm-center text-md-center text-lg-center text-xl-center"><img src="../static/assets/img/person.png" style="width: 328px;margin: 57px;" alt="Human being"><label>Label</label></div>
                     </div>
+                </form>
+                <form class="align-items-center" action="/login_private_key" method="post">
+                <div class="form-row d-flex justify-content-left align-items-left p-0 m-0">
+                    <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos2">
+                        <label for="private_key" style="color: rgb(246,247,248);">Private Key</label>
+                        <div class="form-group">
+                            <input id="private_key" class="form-control" name="private_key" pattern="[0-9a-fA-F]{64}" type="text">
+                        </div>
+                        <input class="btn btn-primary btn-block" type="submit" value="LOG">
+                    </div>
+                </div>
                 </form>
             </div>
         </div>
