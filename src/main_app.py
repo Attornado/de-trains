@@ -20,6 +20,7 @@ blockchain_address = 'http://127.0.0.1:7545'
 web3 = Web3(HTTPProvider(blockchain_address))
 # Set the default account (so we don't need to set the "from" for every transaction call)
 web3.eth.defaultAccount = web3.eth.accounts[0]
+set_account_flag = False
 
 # Path to the compiled contract JSON file
 compiled_contract_path = '../build/contracts/TicketStore.json'
@@ -93,6 +94,8 @@ def login_private_key():
         return jsonify({"message": "Account login failed!"}), 400
 
     web3.eth.defaultAccount = account.address
+    global set_account_flag
+    set_account_flag = True
     return render_template('./index.html')
 
 
@@ -105,11 +108,15 @@ def login_mnemonic():
         return jsonify({"message": "Account login failed!"}), 400
 
     web3.eth.defaultAccount = account.address
+    global set_account_flag
+    set_account_flag = True
     return jsonify({"message": "Login successful!"}), 200
 
 
 @app.route("/admin", methods=["GET"])
 def show_admin_page():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
         return render_template('./admin.html')
@@ -119,7 +126,9 @@ def show_admin_page():
 
 @app.route("/admin/register_admin", methods=["GET"])
 def register_admin():
-    address = request.args.get('admin_address')
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -136,7 +145,9 @@ def register_admin():
 
 @app.route("/admin/register_ticket_usage_setter", methods=["GET"])
 def register_ticket_usage_setter():
-    address = request.args.get('usage_setter_address')
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -150,10 +161,12 @@ def register_ticket_usage_setter():
     else:
         return jsonify({"message": "Usage setter role assignation failed: you are not an admin!"}), 400
 
-
+'''
 @app.route("/admin/remove_admin", methods=["GET"])
 def remove_admin():
-    address = request.args.get('admin_address')
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -170,7 +183,9 @@ def remove_admin():
 
 @app.route("/admin/remove_ticket_usage_setter", methods=["GET"])
 def remove_ticket_usage_setter():
-    address = request.args.get('usage_setter_address')
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isUsageSetter(account=web3.eth.defaultAccount).call():
         contract.functions.isUsageSetter(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -184,6 +199,30 @@ def remove_ticket_usage_setter():
     else:
         return jsonify({
             "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
+        }), 400
+'''
+
+
+@app.route("/admin/withdraw", methods=["GET"])
+def withdraw():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+
+        try:
+            contract.functions.transfer(addressToTransfer=address).call()
+            contract.functions.transfer(addressToTransfer=address).transact()  # Notarization
+        except exceptions.SolidityError as e:
+            return jsonify({
+                "message": "Founds transfer to address" + str(address) + " withdrawal failed: " + str(e)
+            }), 400
+
+        return jsonify({"message": "Founds successfully transfered to address: " + str(address) + "!"}), 200
+    else:
+        return jsonify({
+            "message": "Founds transfer to address" + str(address) + " withdrawal failed: you are not an admin!"
         }), 400
 
 
@@ -206,6 +245,8 @@ def generate_code_url(tk_id: int, start_station: str, end_station: str, station_
 
 @app.route("/buy_ticket", methods=['GET'])
 def buy_ticket():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
     start_station = request.args.get('start_station')
     end_station = request.args.get('end_station')
     station_num: int = int(request.args.get('station_num'))
@@ -260,6 +301,8 @@ def buy_ticket():
 
 @app.route("/refund_ticket", methods=['GET'])
 def refund_ticket():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
     ticket_id = int(request.args.get('ticket_id'))
 
     try:
@@ -268,14 +311,16 @@ def refund_ticket():
     except exceptions.SolidityError as e:
         return jsonify({"message": "Ticket " + str(ticket_id) + " refund failed : " + str(e)}), 400
 
-    response = {"message": "Ticket" + str(ticket_id) + " refunded successfully!"}
+    response = {"message": "Ticket " + str(ticket_id) + " refunded successfully!"}
     return jsonify(response), 200
 
 
 @app.route("/usage_setter/use_ticket", methods=["GET"])
 def use_ticket():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
     ticket_id = request.args.get('ticket_id')
-    if not contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+    if not contract.functions.isAdmin(account=web3.eth.defaultAccount).call() and not contract.functions.isUsageSetter(account=web3.eth.defaultAccount):
         return jsonify({"message": "Ticket usage setting failed: you are not an admin or a usage setter!"}), 400
     try:
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
