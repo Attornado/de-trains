@@ -156,11 +156,9 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     }
 
     function transfer(address payable addressToTransfer) public soloAdmins{
-
         // library function to send amounts to specified address, after which we emit a transfer event
         addressToTransfer.sendValue(address(this).balance);
         emit Transfer(addressToTransfer);
-
     }
 
     function useTicket(uint256 ticketId) public soloUsageSetters{

@@ -35,25 +35,64 @@
         <div class="container">
             <div class="product-item">
                 <div class="d-flex product-item-title"></div>
-                <form class="align-items-center" style="margin: 0px;margin-top: 8px;">
+                <form class="align-items-center" action="/admin/remove_admin" method="get" style="margin: 0px;margin-top: 8px;">
                     <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
                         <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos">
-                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Promuovi Admin</h4><label style="color: rgb(246,247,248);">Address</label>
-                            <div class="form-group"><input class="form-control" id="address_to_admin" name="address_to_admin" type="text"></div><button class="btn btn-primary btn-block" id="promoteBtn" type="submit">PROMOTE</button></div>
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Register admin account</h4>
+                            <label for="address_to_admin" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_admin" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="promoteBtn" type="submit">REGISTER</button>
+                        </div>
                     </div>
                 </form>
-                <form class="align-items-center" action="#azione usage ticket" method="get" style="margin-top: 20px;">
+                <!--
+                <form class="align-items-center" action="/admin/remove_admin" method="get" style="margin: 0px;margin-top: 8px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos4">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Remove admin account</h4>
+                            <label for="address_to_remove_admin" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_remove_admin" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="removeAdminBtn" type="submit">REMOVE</button>
+                        </div>
+                    </div>
+                </form> -->
+                <form class="align-items-center" action="/admin/register_ticket_usage_setter" method="get" style="margin-top: 20px;">
                     <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
                         <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos1">
-                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Crea ticket usage setter</h4><label style="color: rgb(246,247,248);">Address</label>
-                            <div class="form-group"><input class="form-control" id="ticket_to_use" name="ticket_to_use" type="text"></div><button class="btn btn-primary btn-block" id="useBtn" type="submit">USE</button></div>
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Register usage setter account</h4>
+                            <label for="create_usage_setter_addr" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="create_usage_setter_addr" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="registerUsageSetterBtn" type="submit">REGISTER</button>
+                        </div>
                     </div>
                 </form>
-                <form class="align-items-center" action="#azione_prelievo" method="get" style="margin-top: 20px;">
+                <!--
+                <form class="align-items-center" action="/admin/remove_ticket_usage_setter" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos3">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Remove usage setter account</h4>
+                            <label for="remove_usage_setter_addr" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="remove_usage_setter_addr" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="removeUsageSetterBtn" type="submit">REMOVE</button>
+                        </div>
+                    </div>
+                </form> -->
+                <form class="align-items-center" action="/admin/withdraw" method="get" style="margin-top: 20px;">
                     <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
                         <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos2">
-                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Preleva</h4><label style="color: rgb(246,247,248);">Address</label>
-                            <div class="form-group"><input class="form-control" id="address_to_deposit" name="address_to_deposit" type="text"></div><button id="withdrawBtn" class="btn btn-primary btn-block" type="submit">WITHDRAW</button></div>
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Transfer founds</h4><label style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_deposit" name="address" type="text">
+                            </div>
+                            <button id="withdrawBtn" class="btn btn-primary btn-block" type="submit">WITHDRAW</button></div>
                     </div>
                 </form>
             </div>
@@ -69,8 +108,8 @@
             <p class="m-0 small">Copyright&nbsp;©&nbsp;Brand 2022</p>
         </div>
     </footer>
-    <script src="../static/assets/js/utility.js"></script>
     <script src="../static/assets/js/jquery.min.js"></script>
+    <script src="../static/assets/js/utility.js"></script>
     <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/assets/js/Animated-Pretty-Product-List-v12.js"></script>
     <script src="../static/assets/js/current-day.js"></script>

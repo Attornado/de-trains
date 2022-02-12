@@ -1,43 +1,26 @@
 var stations = new Array();
 
 $(document).ready(function(){
-
-
-	
 	populateStation();
+	let daySelect = document.getElementById('daySelect');
+	let dateToInsert = new Date();
+	let dayFormat;
 
-
-	daySelect = document.getElementById('daySelect');
-
-	var dateToInsert = new Date();
-	var dayFormat;
-
-	for(i = 0; i < 30 ; i++){
-
+	for(let i = 0; i < 30 ; i++){
 		dayFormat = dateToInsert.getDate() + "/" + (dateToInsert.getMonth()+1) +  "/" + dateToInsert.getFullYear();
-
  		daySelect.options[daySelect.options.length] = new Option(dayFormat, dayFormat);
  		dateToInsert.setDate(dateToInsert.getDate() + 1);
-
  	}
 
+ 	let startSelect = document.getElementById('startSelect');
 
- 	startSelect = document.getElementById('startSelect');
-
-	for(i = 0; i < stations.length ; i++){
-
+	for(let i = 0; i < stations.length ; i++){
  		startSelect.options[startSelect.options.length] = new Option(stations[i] + " ("+ i+ ")"  , stations[i]);
- 		
-
  	}
-
-
-
 });
 
 
 function populateStation(){
-
 	stations[0] = "Pozzuoli";
 	stations[1] = "Bagnoli";
 	stations[2] = "Cavalligeri";
@@ -54,21 +37,16 @@ function populateStation(){
 	stations[13] = "Pietrarsa";
 	stations[14] = "Portici";
 	stations[15] = "Ercolano";
-	
-
 }
 
 function findNumOfStation(station){
-
 	return stations.indexOf(station);
-
-
 }
 
 $(function(){
-        $('#startSelect option').click(function(){
+        $('#startSelect option').on("click",function(){
 
-        endSelect = document.getElementById('endSelect');
+        let endSelect = document.getElementById('endSelect');
 
        	$("#endSelect").empty();
 
@@ -94,7 +72,7 @@ $(function(){
 					let msg;
 					let ticket = JSON.parse(responseObject.ticket);
 					let ticketUri = responseObject.ticket_uri
-					msg = "Ticket bought successfully! Ticket id is: " + ticket.Ticket__id + "\nTicket URI is: " + ticketUri;
+					msg = "Ticket " + ticket._Ticket__id + " bought successfully! \nURI: " + ticketUri;
 					let type = "success";
 					showPopupMessage(type, msg);
 				}
@@ -102,7 +80,7 @@ $(function(){
 		});
 });
 
-$('#startSelect').click(function () {
+$('#startSelect').on("click",function () {
 	$("#hiddenNumStation").val(1);
 	$('#buyButton').prop('disabled', false);
 });

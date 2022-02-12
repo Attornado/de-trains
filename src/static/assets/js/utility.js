@@ -17,5 +17,12 @@ function showPopupMessage(type= "notice", msg= "", timeoutSec= 0){
     $popupMessageBox.find($popupMessageBox.prop("id") + " .msgContent").text(msg); //impostiamone il contenuto
     $popupMessageBox.addClass("visible"); //rendiamolo visibile
     if(timeoutSec !== 0)
-        setTimeout(() => $(".popupBox").removeClass("visible"), timeoutSec*1000);
+        setTimeout(() => $popupMessageBox.removeClass("visible"), timeoutSec*1000);
+
 }
+
+$(function(){
+    $(".popupBox .closeButton").on("click", ev => {
+        $(".popupBox").removeClass("visible");
+    });
+});
