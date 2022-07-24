@@ -1,11 +1,12 @@
 from flask import jsonify, request, render_template
 from web3 import exceptions
-
 from src.main_app import app, web3, contract
 
 
-@app.route("/show_admin_page", methods=["GET"])
+@app.route("/admin", methods=["GET"])
 def show_admin_page():
+    # if not set_account_flag:
+    #    return jsonify({"message": "You are not logged in!"}), 400
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
         return render_template('./admin.html')
@@ -15,7 +16,9 @@ def show_admin_page():
 
 @app.route("/admin/register_admin", methods=["GET"])
 def register_admin():
-    address = request.args.get('admin_address')
+    # if not set_account_flag:
+    #    return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -32,7 +35,9 @@ def register_admin():
 
 @app.route("/admin/register_ticket_usage_setter", methods=["GET"])
 def register_ticket_usage_setter():
-    address = request.args.get('usage_setter_address')
+    # if not set_account_flag:
+    #    return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -47,9 +52,35 @@ def register_ticket_usage_setter():
         return jsonify({"message": "Usage setter role assignation failed: you are not an admin!"}), 400
 
 
+@app.route("/admin/withdraw", methods=["GET"])
+def withdraw():
+    # if not set_account_flag:
+    #    return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+
+        try:
+            contract.functions.transfer(addressToTransfer=address).call()
+            contract.functions.transfer(addressToTransfer=address).transact()  # Notarization
+        except exceptions.SolidityError as e:
+            return jsonify({
+                "message": "Founds transfer to address" + str(address) + " withdrawal failed: " + str(e)
+            }), 400
+
+        return jsonify({"message": "Founds successfully transfered to address: " + str(address) + "!"}), 200
+    else:
+        return jsonify({
+            "message": "Founds transfer to address" + str(address) + " withdrawal failed: you are not an admin!"
+        }), 400
+
+
+'''
 @app.route("/admin/remove_admin", methods=["GET"])
-def register_admin():
-    address = request.args.get('admin_address')
+def remove_admin():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -65,8 +96,10 @@ def register_admin():
 
 
 @app.route("/admin/remove_ticket_usage_setter", methods=["GET"])
-def register_ticket_usage_setter():
-    address = request.args.get('usage_setter_address')
+def remove_ticket_usage_setter():
+    if not set_account_flag:
+        return jsonify({"message": "You are not logged in!"}), 400
+    address = request.args.get('address')
     if contract.functions.isUsageSetter(account=web3.eth.defaultAccount).call():
         contract.functions.isUsageSetter(account=web3.eth.defaultAccount).transact()  # Notarization
 
@@ -83,7 +116,6 @@ def register_ticket_usage_setter():
         }), 400
 
 
-
 @app.route("/admin/transfer_founds", methods=["GET"])
 def transfer_founds():
     address = request.args.get('transfer_address')
@@ -96,8 +128,8 @@ def transfer_founds():
         except exceptions.SolidityError as e:
             return jsonify({"message": "Usage setter role assignation failed: " + str(e)}), 400
 
-            return jsonify({"message": "Usage setter role removed successfully to address: " + str(address)}), 200
     else:
         return jsonify({
             "message": "Usage setter role renounce failed: you are not an admin nor a usage setter!"
         }), 400
+'''

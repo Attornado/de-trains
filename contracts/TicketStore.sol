@@ -17,6 +17,7 @@ struct Ticket {
     uint256 startDate;
     uint256 endDate;
     uint256 price;
+    int dbId;
     bool used;
     bool refunded;
 }
@@ -107,7 +108,8 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         string memory trainClass,
         string memory fare,
         uint256 startDate,
-        uint256 endDate
+        uint256 endDate,
+        int dbId
     ) public payable returns (uint256) {
         uint256 paidAmount = msg.value;
         // Subtract 1 day to allow same-day ticket purchase
@@ -134,6 +136,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
                 startDate,
                 endDate,
                 paidAmount,
+                dbId,
                 false,
                 false
             );
@@ -204,6 +207,11 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         // Set ticket used
         tickets[ticketId].used = true;
         emit UseTicket(ticketId, ownerOf(ticketId), msg.sender);
+    }
+
+    // This function will be used to check the validity of the purchased ticket parameters against the one in the db
+    function getTicketInfo(uint256 ticketId) public usageSetterOnly returns (Ticket){
+        return tickets[ticketId];
     }
 
     // Override to prevent errors with the multiple inheritance

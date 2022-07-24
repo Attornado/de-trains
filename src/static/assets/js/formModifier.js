@@ -60,8 +60,8 @@ $(function(){
 
 		$("#buyButton").on("click", ev => {
 			ev.preventDefault();
-			$.ajax("buy_ticket?date=" + $("#daySelect").val() + "&start_station=" + $("#startSelect").val() +
-				"&end_station=" + $("#endSelect").val() + "&station_num=" + $("#hiddenNumStation").val(), {
+			$.ajax("buy_ticket?start_date=" + $("#daySelect").val() + "&origin=" + $("#startSelect").val() +
+				"&destination=" + $("#endSelect").val() + "&station_num=" + $("#hiddenNumStation").val(), {
 				method: "GET",
 				error: responseObject => {
 					let msg = responseObject.message;
