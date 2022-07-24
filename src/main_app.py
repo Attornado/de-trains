@@ -3,6 +3,7 @@ import json
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from web3 import Web3, HTTPProvider, exceptions
+
 from tickets.tickets_api import retrieve_and_check_ticket_by_id, buy_ticket, generate_code_url, generate_ticket_uri, \
     refund_ticket, use_ticket, IPFS_PORT, IPFS_ADDRESS
 from tickets.ticket import Ticket
@@ -27,7 +28,7 @@ set_account_flag = False
 compiled_contract_path = '../build/contracts/TicketStore.json'
 
 # Deployed contract address (see `migrate` command output: `contract address`)
-deployed_contract_address = "0xFad328e049a0a6492A1e0b9204F36aD3C3e63970"
+deployed_contract_address = "0xF00723b667FeAf4b6a85c208f05e3c771FE3d15D"
 
 # Enable unaudited features
 web3.eth.account.enable_unaudited_hdwallet_features()

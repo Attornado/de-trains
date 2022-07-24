@@ -5,8 +5,10 @@ from web3 import exceptions
 from src.main_app import app, web3, contract
 from ticket import Ticket
 from typing import final, Optional
+from flask import Blueprint
 
 
+TICKET_API = Blueprint('TICKET_API', __name__)
 IPFS_ADDRESS: final = "127.0.0.1"
 IPFS_PORT: final = 5001
 

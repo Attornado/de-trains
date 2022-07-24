@@ -1,6 +1,10 @@
 from flask import jsonify, request, render_template
 from web3 import exceptions
 from src.main_app import app, web3, contract
+from flask import Blueprint
+
+
+ADMIN_API = Blueprint('ADMIN_API', __name__)
 
 
 @app.route("/admin", methods=["GET"])

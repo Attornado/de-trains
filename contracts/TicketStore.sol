@@ -180,7 +180,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         tickets[ticketId].refunded = true;
 
         // Calculate ticket price
-        ticketPrice = tickets[ticketId].price;
+        uint256 ticketPrice = tickets[ticketId].price;
         
         // Library function to send amounts to specified address, after which we emit a refund event
         owner.sendValue(ticketPrice);
@@ -210,7 +210,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     }
 
     // This function will be used to check the validity of the purchased ticket parameters against the one in the db
-    function getTicketInfo(uint256 ticketId) public usageSetterOnly returns (Ticket){
+    function getTicketInfo(uint256 ticketId) external usageSetterOnly returns (Ticket memory){
         return tickets[ticketId];
     }
 
