@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from src.contract_setup import web3
-#from tickets.tickets_api import TICKETS_API
-#from admin.admin_api import ADMIN_API
+from tickets.tickets_api import TICKETS_API
+from admin.admin_api import ADMIN_API
 
 
 # Instantiate the flask app
@@ -10,8 +10,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Get APIs from other files
-#app.register_blueprint(TICKETS_API)
-#app.register_blueprint(ADMIN_API)
+app.register_blueprint(TICKETS_API)
+app.register_blueprint(ADMIN_API)
 
 
 def check_account_exist(address: str) -> bool:
