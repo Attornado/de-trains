@@ -1,44 +1,17 @@
-import datetime
-import json
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from web3 import Web3, HTTPProvider, exceptions
-from tickets.tickets_api import retrieve_and_check_ticket_by_id, buy_ticket, generate_code_url, generate_ticket_uri, \
-    refund_ticket, use_ticket, IPFS_PORT, IPFS_ADDRESS
-from tickets.ticket import Ticket
-from admin.admin_api import register_admin, show_admin_page, register_ticket_usage_setter, withdraw
+from src.contract_setup import web3
+from tickets.tickets_api import TICKETS_API
+from admin.admin_api import ADMIN_API
 
 
 # Instantiate the flask app
 app = Flask(__name__)
 CORS(app)
 
-# Truffle development blockchain address
-blockchain_address = 'http://127.0.0.1:7545'
-
-# Client instance to interact with the blockchain
-web3 = Web3(HTTPProvider(blockchain_address))
-
-# Set the default account (so we don't need to set the "from" for every transaction call)
-web3.eth.defaultAccount = web3.eth.accounts[0]
-set_account_flag = False
-
-# Path to the compiled contract JSON file
-compiled_contract_path = '../build/contracts/TicketStore.json'
-
-# Deployed contract address (see `migrate` command output: `contract address`)
-deployed_contract_address = "0xFad328e049a0a6492A1e0b9204F36aD3C3e63970"
-
-# Enable unaudited features
-web3.eth.account.enable_unaudited_hdwallet_features()
-
-# Load smart contract
-with open(compiled_contract_path) as file:
-    contract_json = json.load(file)  # load contract info as JSON
-    contract_abi = contract_json['abi']  # fetch contract's abi - necessary to call its functions
-
-# Fetch deployed contract reference
-contract = web3.eth.contract(address=deployed_contract_address, abi=contract_abi)  # ignore this warning
+# Get APIs from other files
+app.register_blueprint(TICKETS_API)
+app.register_blueprint(ADMIN_API)
 
 
 def check_account_exist(address: str) -> bool:
