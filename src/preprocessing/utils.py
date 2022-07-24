@@ -6,6 +6,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from tqdm.auto import tqdm
 
+
 PLOT_DIR: final = "plots/"
 _FONTSIZE_PLOT_CATEGORICAL: final = 8
 _ROTATION_PLOT_CATEGORICAL: final = 15

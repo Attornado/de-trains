@@ -6,11 +6,17 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 
+
+// Define Ticket struct to contain ticket info
 struct Ticket {
     string startStation;
     string endStation;
-    int stationNum;
-    uint256 date;
+    string trainType;
+    string trainClass;
+    string fare;
+    uint256 startDate;
+    uint256 endDate;
+    uint256 price;
     bool used;
     bool refunded;
 }
@@ -43,22 +49,23 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
     // Event definition
     event Debug(address user, address sender, bytes32 role, bytes32 adminRole, bytes32 senderRole);
-    event DebugBuy(address buyer, uint256 amount, int stationNum, uint256 date, uint256 blocktimestamp);
-    event ChecksoloAdmins(address user);
-    event ChecksoloUsageSetters(address user);
+    event DebugBuy(address buyer, uint256 amount, uint256 startDate, uint256 blocktimestamp, uint256 endDate);
+    event CheckAdminsOnly(address user);
+    event CheckUsageSettersOnly(address user);
     event RefundTicket(uint256 ticketId, address user, uint256 refundedAmount);
     event UseTicket(uint256 ticketId, address ownerAccount, address usageSetter);
     event Transfer(address toTransfer);
 
     // AccessControl modifier and permission-checking function definition
-    modifier soloAdmins() {
-        emit ChecksoloAdmins(msg.sender);
+    modifier adminsOnly() {
+        emit CheckAdminsOnly(msg.sender);
         require(isAdmin(msg.sender), "Caller is not an admin account!");
         _;
     }
 
-    modifier soloUsageSetters() {
-        emit ChecksoloUsageSetters(msg.sender);
+    // Modifiers for role-handling
+    modifier usageSetterOnly() {
+        emit CheckUsageSettersOnly(msg.sender);
         require(isUsageSetter(msg.sender) || isAdmin(msg.sender), "Caller is not a usage setter account!");
         _;
     }
@@ -71,37 +78,65 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         return hasRole(USAGE_SETTER_ROLE, account);
     }
 
-    function addAdminRole(address to) public soloAdmins {
+    function addAdminRole(address to) public adminsOnly {
         emit Debug(to, msg.sender, DEFAULT_ADMIN_ROLE, getRoleAdmin(DEFAULT_ADMIN_ROLE), DEFAULT_ADMIN_ROLE);
         grantRole(DEFAULT_ADMIN_ROLE, to);
     }
 
-    function addUsageSetterRole(address to) public soloAdmins {
+    function addUsageSetterRole(address to) public adminsOnly {
         emit Debug(to, msg.sender, USAGE_SETTER_ROLE, getRoleAdmin(USAGE_SETTER_ROLE), DEFAULT_ADMIN_ROLE);
         grantRole(USAGE_SETTER_ROLE, to);
     }
 
-    function removeUsageSetterRole(address to) public soloUsageSetters {
+    function removeUsageSetterRole(address to) public usageSetterOnly {
         require(isAdmin(msg.sender) || msg.sender == to); // sender must be an admin or the usage setter himself
         renounceRole(USAGE_SETTER_ROLE, to);
     }
 
-    function removeAdminRole(address to) public soloAdmins {
+    function removeAdminRole(address to) public adminsOnly {
         renounceRole(DEFAULT_ADMIN_ROLE, to);
     }
 
     // Other misc functions 
-    function buyTicket(address buyer, string memory ticketURI, int stationNum, string memory startStation,
-     string memory endStation, uint256 date) public payable returns (uint256) {
+    function buyTicket(
+        address buyer,
+        string memory ticketURI,
+        string memory startStation,
+        string memory endStation,
+        string memory trainType,
+        string memory trainClass,
+        string memory fare,
+        uint256 startDate,
+        uint256 endDate
+    ) public payable returns (uint256) {
         uint256 paidAmount = msg.value;
-        // subtract 1 day to allow same-day ticket purchase
-        emit DebugBuy(buyer, msg.value, stationNum, date, block.timestamp - 24*3600);
-        if (checkPaidAmount(paidAmount, stationNum) && date > block.timestamp - 24*3600){
+        // Subtract 1 day to allow same-day ticket purchase
+        emit DebugBuy(buyer, paidAmount, startDate, block.timestamp - 24*3600, endDate);
+
+        // Check if given dates are correct
+        require(startDate > block.timestamp - 24*3600 && startDate < endDate);
+
+        if (startDate > block.timestamp - 24*3600 && startDate < endDate){
+
+            // Increment ticket ids and mint NFT
             _ticketIds.increment();
             uint256 newTicketId = _ticketIds.current();
             _mint(buyer, newTicketId);
             _setTokenURI(newTicketId, ticketURI);
-            tickets[newTicketId] = Ticket(startStation, endStation, stationNum, date, false, false);
+
+            // Generate the struct to keep track of the ticket info
+            tickets[newTicketId] = Ticket(
+                startStation,
+                endStation,
+                trainType,
+                trainClass,
+                fare,
+                startDate,
+                endDate,
+                paidAmount,
+                false,
+                false
+            );
             return newTicketId;
         }
         else {
@@ -113,7 +148,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
         return _ticketIds.current() + 1;
     }
 
-    function checkPaidAmount(uint256 paidAmount, int stationNum) private pure returns (bool){
+    /*function checkPaidAmount(uint256 paidAmount, int stationNum) private pure returns (bool){
         if(stationNum < MIN_STATION_MEDIUM && paidAmount == TICKET_PRICE_SHORT){
             return true;
         }
@@ -124,59 +159,54 @@ contract TicketStore is ERC721URIStorage, AccessControl {
             return true;
         }
         return false;
-    }
+    }*/
 
     function refund(uint256 ticketId) public {
-        // caller must be the owner
+        // Caller must be the owner
         address payable owner = payable(ownerOf(ticketId));
         require(msg.sender == owner);
 
-        // ticket has not to be already used
+        // Ticket has not to be already used
         require(!tickets[ticketId].used);
 
-        // ticket has to be not expired, and we don't care if the miner can modify this by 900s
-        require(tickets[ticketId].date > block.timestamp - 3600*24);
+        // Ticket has to be not expired, and we don't care if the miner can modify this by 900s
+        require(tickets[ticketId].startDate > block.timestamp - 3600*24);
 
-        // ticked has to be not refunded
+        // Ticket has to be not refunded
         require(!tickets[ticketId].refunded);
         tickets[ticketId].refunded = true;
 
-        // calculate ticket price
-        uint256 ticketPrice = TICKET_PRICE_SHORT;
-        if(tickets[ticketId].stationNum >= MIN_STATION_MEDIUM && tickets[ticketId].stationNum < MIN_STATION_LONG){
-            ticketPrice = TICKET_PRICE_MEDIUM;
-        }
-        else if(tickets[ticketId].stationNum >= MIN_STATION_LONG){
-            ticketPrice = TICKET_PRICE_LONG;
-        }
+        // Calculate ticket price
+        ticketPrice = tickets[ticketId].price;
         
-        // library function to send amounts to specified address, after which we emit a refund event
+        // Library function to send amounts to specified address, after which we emit a refund event
         owner.sendValue(ticketPrice);
         emit RefundTicket(ticketId, owner, ticketPrice);
     }
 
-    function transfer(address payable addressToTransfer) public soloAdmins{
-        // library function to send amounts to specified address, after which we emit a transfer event
+    function transfer(address payable addressToTransfer) public adminsOnly{
+        // Library function to send amounts to specified address, after which we emit a transfer event
         addressToTransfer.sendValue(address(this).balance);
         emit Transfer(addressToTransfer);
     }
 
-    function useTicket(uint256 ticketId) public soloUsageSetters{
-        // ticket has not to be already used
+    function useTicket(uint256 ticketId) public usageSetterOnly{
+        // Ticket has not to be already used
         require(!tickets[ticketId].used);
 
-        // ticket has to be not expired, subtract 1 day to allow same-day ticket refunds, also we don't care if the
+        // Ticket has to be not expired, subtract 1 day to allow same-day ticket refunds, also we don't care if the
         // miner can modify this by 900s
-        require(tickets[ticketId].date > block.timestamp - 3600*24);
+        require(tickets[ticketId].startDate > block.timestamp - 3600*24);
 
-        // ticked has to be not refunded
+        // Ticket has to be not refunded
         require(!tickets[ticketId].refunded);
 
+        // Set ticket used
         tickets[ticketId].used = true;
         emit UseTicket(ticketId, ownerOf(ticketId), msg.sender);
     }
 
-    // override to prevent errors with the multiple inheritage
+    // Override to prevent errors with the multiple inheritance
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }

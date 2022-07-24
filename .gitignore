@@ -131,3 +131,9 @@ dmypy.json
 giggino.txt
 ticket*.json
 /node_modules/
+/node_modules
+node_modules
+/node_modules/*
+/node_modules/lite-server
+/node_modules/.bin
+/node_modules/.bin/lite-server
