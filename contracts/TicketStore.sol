@@ -9,8 +9,8 @@ import "@openzeppelin/contracts/utils/Address.sol";
 
 // Define Ticket struct to contain ticket info
 struct Ticket {
-    string startStation;
-    string endStation;
+    string origin;
+    string destination;
     string trainType;
     string trainClass;
     string fare;
@@ -42,7 +42,7 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
     // Constructor
     constructor() ERC721("TicketStore", "TKS") {
-        _ticketIds.increment(); // because we want to start from 1
+        _ticketIds.increment(); // we want it to start from 1
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setRoleAdmin(USAGE_SETTER_ROLE, DEFAULT_ADMIN_ROLE);
     }
@@ -101,8 +101,8 @@ contract TicketStore is ERC721URIStorage, AccessControl {
     function buyTicket(
         address buyer,
         string memory ticketURI,
-        string memory startStation,
-        string memory endStation,
+        string memory origin,
+        string memory destination,
         string memory trainType,
         string memory trainClass,
         string memory fare,
@@ -126,8 +126,8 @@ contract TicketStore is ERC721URIStorage, AccessControl {
 
             // Generate the struct to keep track of the ticket info
             tickets[newTicketId] = Ticket(
-                startStation,
-                endStation,
+                origin,
+                destination,
                 trainType,
                 trainClass,
                 fare,

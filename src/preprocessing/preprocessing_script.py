@@ -39,9 +39,8 @@ def main():
         n_changes=0
     )
 
+    # Plot stats
     print(df.info())
-    print(df['origin'].value_counts())
-
     print(plot_stats(df, 'origin', categorical=True, save_path=PLOT_DIR + "origin.svg", show_plot=True))
     print(plot_stats(df, 'destination', categorical=True, save_path=PLOT_DIR + "destination.svg", show_plot=True))
     print(plot_stats(df, 'train_type', categorical=True, save_path=PLOT_DIR + "train_type.svg", show_plot=True))
@@ -49,11 +48,7 @@ def main():
     print(plot_stats(df, 'fare', categorical=True, save_path=PLOT_DIR + "fare.svg", show_plot=True))
     print(plot_stats(df, 'price', categorical=False, save_path=PLOT_DIR + "price.svg", show_plot=True))
 
-    print(df['destination'].value_counts())
-    print(df['train_type'].value_counts())
-    print(df['train_class'].value_counts())
-    print(df['fare'].value_counts())
-
+    # Connection handling
     connect = int(input("Connect to database (1: yes, 0: no)? "))
 
     # Maybe do not delete price column because if wrong price is given then the ticket validator would check ticket

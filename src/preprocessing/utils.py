@@ -16,6 +16,8 @@ MODE: final = 'mode'
 MEAN: final = 'mean'
 MEDIAN: final = 'median'
 QUANTILES: final = 'quantiles'
+VARIANCE: final = 'var'
+STANDARD_DEVIATION: final = 'sd'
 
 
 def csv_to_json(path: str, export_path: Optional[str] = None, add_id: bool = False, max_rows: int = -1):
@@ -118,14 +120,16 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
     """
     Plots and returns stats for the given column of the given dataframe. For categorical data, only mode is computed as
     stat and only barplot is performed, while for numerical data, both boxplot and histogram are computed, alongside
-    mode, mean, median and 4-quantiles.
+    mode, mean, median, 4-quantiles, standard deviation and variance.
 
     :param df: dataframe to plot stats for.
     :param column: column to plot stats for.
     :param categorical: whatever or not the given column is categorical.
     :param save_path: path to store the plots into.
     :param show_plot: whatever or not to show the plots of the given columns.
-    :return:
+    :return: a dictionary containing the different stats according to the given column type. If given column is
+        categorical, then mode only is returned, otherwise mode, mean, median, 4-quantiles, standard deviation and
+        variance are returned.
     """
     stats = {}
     if categorical:
@@ -180,6 +184,12 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
 
         # Quantiles
         stats[QUANTILES] = df[column].astype(np.float32).quantile([0, 0.25, 0.5, 0.75, 1])
+
+        # Variance
+        stats[VARIANCE] = df[column].astype(np.float32).var()
+
+        # Standard deviation
+        stats[STANDARD_DEVIATION] = df[column].astype(np.float32).std()
 
     return stats
 
