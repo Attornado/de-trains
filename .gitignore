@@ -130,3 +130,4 @@ dmypy.json
 
 giggino.txt
 ticket*.json
+/node_modules/
