@@ -1,40 +1,31 @@
 import csv
 import json
-from typing import Optional, final
-from tqdm.auto import tqdm
-import pandas as pd
-import matplotlib.pyplot as plt
-from pymongo import MongoClient
-import pymongo
+from typing import final, Optional
 import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+from tqdm.auto import tqdm
 
-
-MAX_ROWS: final = 50000
-ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
-ORIGINAL_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\renfe.json"
-CLEANED_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\cleaned_renfe.json"
-CONNECTION_STRING: final = "mongodb+srv://Attornado:andrea22@cluster0.t3es8fi.mongodb.net/?retryWrites=true&w=majority"
 PLOT_DIR: final = "plots/"
-DB_NAME: final = "TrainTickets"
-COLLECTION_NAME: final = "Tickets"
-FONTSIZE_PLOT_CATEGORICAL: final = 8
-ROTATION_PLOT_CATEGORICAL: final = 15
-FONTSIZE_PLOT_NUMERICAL: final = 11
-ROTATION_PLOT_NUMERICAL: final = 0
+_FONTSIZE_PLOT_CATEGORICAL: final = 8
+_ROTATION_PLOT_CATEGORICAL: final = 15
+_FONTSIZE_PLOT_NUMERICAL: final = 11
+_ROTATION_PLOT_NUMERICAL: final = 0
 MODE: final = 'mode'
 MEAN: final = 'mean'
 MEDIAN: final = 'median'
 QUANTILES: final = 'quantiles'
 
 
-def csv_to_json(path: str, export_path: Optional[str] = None, add_id: bool = False):
+def csv_to_json(path: str, export_path: Optional[str] = None, add_id: bool = False, max_rows: int = -1):
     """
     Converts csv file to json format, adding an id and exporting it to file if required.
 
     :param path: path of the csv file to convert.
     :param export_path: optional export path for the generated json.
-    :param add_id: a boolean indicating whethever or not to add an
+    :param add_id: a boolean indicating whatever or not to add an
         auto-increment id field to the csv.
+    :param max_rows: maximum number of rows to read from the csv file (default is -1, which means no limit).
     :return a json string representing the csv content.
     """
     data = []
@@ -59,7 +50,7 @@ def csv_to_json(path: str, export_path: Optional[str] = None, add_id: bool = Fal
             auto_increment_id += 1
             print(f"Done: {auto_increment_id}")
 
-            if auto_increment_id > MAX_ROWS:
+            if (max_rows > -1) and (auto_increment_id > max_rows):
                 print("Reached max row limit. Exiting from reading.")
                 break
 
@@ -140,7 +131,7 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
         # Barplot
         column_value_counts = df[column].value_counts()
         ax = column_value_counts.plot.bar(x=column, y='count', rot=0)
-        plt.setp(ax.get_xticklabels(), fontsize=FONTSIZE_PLOT_CATEGORICAL, rotation=ROTATION_PLOT_CATEGORICAL)
+        plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_CATEGORICAL, rotation=_ROTATION_PLOT_CATEGORICAL)
 
         # Show and store plot if required
         if save_path is not None:
@@ -151,7 +142,7 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
     else:
         # Histogram
         ax = df[column].astype(np.float32).plot.hist(x=column, y='Frequency', rot=0, bins=10)
-        plt.setp(ax.get_xticklabels(), fontsize=FONTSIZE_PLOT_CATEGORICAL, rotation=ROTATION_PLOT_CATEGORICAL)
+        plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_CATEGORICAL, rotation=_ROTATION_PLOT_CATEGORICAL)
 
         # Show and store plot if required
         if save_path is not None:
@@ -229,56 +220,3 @@ def change_values(df: pd.DataFrame, column_alternatives: dict[str, list], n_chan
             change_count += 1
 
     return df
-
-
-def main():
-    convert = int(input("Convert csv to json (1: yes, 0: no)? "))
-
-    # Load or create json dataset
-    if convert != 0:
-        csv_path = ORIGINAL_DATASET_DIR
-        json_dict = csv_to_json(csv_path, export_path=ORIGINAL_DATASET_DIR_JSON, add_id=True)
-    else:
-        json_dict = load_json(ORIGINAL_DATASET_DIR_JSON)
-
-    # Convert json to dataframe
-    df = json_to_dataframe(ORIGINAL_DATASET_DIR_JSON)
-    df = clear_dataframe(df, undesired_columns=['insert_date'])
-
-    # Convert price to float
-    df['price'] = df['price'].astype(np.float32)
-
-    # Change some values to improve variance
-    change_values(df, column_alternatives={'origin': ["VALENCIA", "SEVILLA"], "destination": ["BARCELONA", "MADRID"]},
-                  n_changes=0)
-
-    print(df.info())
-    print(df['origin'].value_counts())
-
-    print(plot_stats(df, 'origin', categorical=True, save_path=PLOT_DIR + "origin.svg", show_plot=True))
-    print(plot_stats(df, 'destination', categorical=True, save_path=PLOT_DIR + "destination.svg", show_plot=True))
-    print(plot_stats(df, 'train_type', categorical=True, save_path=PLOT_DIR + "train_type.svg", show_plot=True))
-    print(plot_stats(df, 'train_class', categorical=True, save_path=PLOT_DIR + "train_class.svg", show_plot=True))
-    print(plot_stats(df, 'fare', categorical=True, save_path=PLOT_DIR + "fare.svg", show_plot=True))
-    print(plot_stats(df, 'price', categorical=False, save_path=PLOT_DIR + "price.svg", show_plot=True))
-
-    print(df['destination'].value_counts())
-    print(df['train_type'].value_counts())
-    print(df['train_class'].value_counts())
-    print(df['fare'].value_counts())
-
-    connect = int(input("Connect to database (1: yes, 0: no)? "))
-
-    # Maybe do not delete price column because if wrong price is given then the ticket validator would check ticket
-    # price on the contract and invalidate it?
-
-    if connect != 0:
-        # Create connection
-        client = MongoClient(CONNECTION_STRING)
-        db = client[DB_NAME]
-        collection = db[COLLECTION_NAME]
-        collection.insert_one(json_dict[1])
-
-
-if __name__ == '__main__':
-    main()
