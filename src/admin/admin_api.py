@@ -1,13 +1,14 @@
 from flask import jsonify, request, render_template
 from web3 import exceptions
-from src.main_app import app, web3, contract
+import web3
+from src.contract_setup import web3, contract
 from flask import Blueprint
 
 
 ADMIN_API = Blueprint('ADMIN_API', __name__)
 
 
-@app.route("/admin", methods=["GET"])
+@ADMIN_API.route("/admin", methods=["GET"])
 def show_admin_page():
     # if not set_account_flag:
     #    return jsonify({"message": "You are not logged in!"}), 400
@@ -18,7 +19,7 @@ def show_admin_page():
         return jsonify({"message": "You are not an admin!"}), 400
 
 
-@app.route("/admin/register_admin", methods=["GET"])
+@ADMIN_API.route("/admin/register_admin", methods=["GET"])
 def register_admin():
     # if not set_account_flag:
     #    return jsonify({"message": "You are not logged in!"}), 400
@@ -37,7 +38,7 @@ def register_admin():
         return jsonify({"message": "Admin role assignation failed: you are not an admin!"}), 400
 
 
-@app.route("/admin/register_ticket_usage_setter", methods=["GET"])
+@ADMIN_API.route("/admin/register_ticket_usage_setter", methods=["GET"])
 def register_ticket_usage_setter():
     # if not set_account_flag:
     #    return jsonify({"message": "You are not logged in!"}), 400
@@ -56,7 +57,7 @@ def register_ticket_usage_setter():
         return jsonify({"message": "Usage setter role assignation failed: you are not an admin!"}), 400
 
 
-@app.route("/admin/withdraw", methods=["GET"])
+@ADMIN_API.route("/admin/withdraw", methods=["GET"])
 def withdraw():
     # if not set_account_flag:
     #    return jsonify({"message": "You are not logged in!"}), 400
@@ -80,7 +81,7 @@ def withdraw():
 
 
 '''
-@app.route("/admin/remove_admin", methods=["GET"])
+@ADMIN_API.route("/admin/remove_admin", methods=["GET"])
 def remove_admin():
     if not set_account_flag:
         return jsonify({"message": "You are not logged in!"}), 400
@@ -99,7 +100,7 @@ def remove_admin():
         return jsonify({"message": "Admin role renounce failed: you are not an admin!"}), 400
 
 
-@app.route("/admin/remove_ticket_usage_setter", methods=["GET"])
+@ADMIN_API.route("/admin/remove_ticket_usage_setter", methods=["GET"])
 def remove_ticket_usage_setter():
     if not set_account_flag:
         return jsonify({"message": "You are not logged in!"}), 400
@@ -120,7 +121,7 @@ def remove_ticket_usage_setter():
         }), 400
 
 
-@app.route("/admin/transfer_founds", methods=["GET"])
+@ADMIN_API.route("/admin/transfer_founds", methods=["GET"])
 def transfer_founds():
     address = request.args.get('transfer_address')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
