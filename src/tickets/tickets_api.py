@@ -2,11 +2,13 @@ import json
 import ipfsapi
 from flask import jsonify, request
 from web3 import exceptions
-from src.main_app import app, web3, contract
+from src.contract_setup import web3, contract
 from ticket import Ticket
 from typing import final, Optional
+from flask import Blueprint
 
 
+TICKETS_API = Blueprint('TICKETS_API', __name__)
 IPFS_ADDRESS: final = "127.0.0.1"
 IPFS_PORT: final = 5001
 
@@ -83,7 +85,7 @@ def retrieve_and_check_ticket_by_id(origin: str, destination: str, start_date: s
     )
 
 
-@app.route("/buy_ticket", methods=['GET'])
+@TICKETS_API.route("/buy_ticket", methods=['GET'])
 def buy_ticket():
     # These parameters can be taken from the front-end safely, since ticket validator will eventually check them
     # comparing the purchased ticket stored in smart contract with the database one
@@ -180,7 +182,7 @@ def buy_ticket():
     return jsonify(response), 200
 
 
-@app.route("/refund", methods=['GET'])
+@TICKETS_API.route("/refund", methods=['GET'])
 def refund_ticket():
     ticket_id = request.args.get('ticket_id')
 
@@ -194,7 +196,7 @@ def refund_ticket():
     return jsonify(response), 200
 
 
-@app.route("/usage_setter/use_ticket", methods=["GET"])
+@TICKETS_API.route("/usage_setter/use_ticket", methods=["GET"])
 def use_ticket():
     ticket_id = request.args.get('ticket_id')
     if not contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
