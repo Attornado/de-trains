@@ -1,8 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from src.contract_setup import web3
-from tickets.tickets_api import TICKETS_API
-from admin.admin_api import ADMIN_API
+from src.tickets.tickets_api import TICKETS_API
+from src.admin.admin_api import ADMIN_API
 
 
 # Instantiate the flask app
