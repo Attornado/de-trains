@@ -56,14 +56,20 @@ class Ticket:
     @property
     def start_date_as_int(self) -> int:
         # Format '%d/%m/%y %H:%M:%S.%f'
-        a = datetime.strptime(self.__start_date, '%d/%m/%y')
-        return a.microsecond
+        try:
+            a = datetime.strptime(self.__start_date, '%d/%m/%Y')
+        except ValueError:
+            a = datetime.strptime(self.__start_date, '%d/%m/%Y %H:%M:%S.%f')
+        return int(a.timestamp())
 
     @property
     def end_date_as_int(self) -> int:
         # Format '%d/%m/%y %H:%M:%S.%f'
-        a = datetime.strptime(self.__end_date, '%d/%m/%y')
-        return a.microsecond
+        try:
+            a = datetime.strptime(self.__end_date, '%d/%m/%Y')
+        except ValueError:
+            a = datetime.strptime(self.__end_date, '%d/%m/%Y %H:%M:%S.%f')
+        return int(a.timestamp())
 
     @property
     def train_type(self) -> str:

@@ -1,15 +1,15 @@
 import json
-import ipfsapi
 from flask import jsonify, request
+import ipfshttpclient
 from web3 import exceptions
 from src.contract_setup import web3, contract
-from ticket import Ticket
+from src.tickets.ticket import Ticket
 from typing import final, Optional
 from flask import Blueprint
 
 
 TICKETS_API = Blueprint('TICKETS_API', __name__)
-IPFS_ADDRESS: final = "127.0.0.1"
+IPFS_ADDRESS: final = "127.0.0.1:5001"
 IPFS_PORT: final = 5001
 
 
@@ -21,10 +21,10 @@ def generate_ticket_uri(ticket_json):
     :return: an URI string pointing to the NFT URI of the ticket.
     """
     tk_id = json.loads(ticket_json)['id']
-    filename = 'ticket' + tk_id + '.json'
+    filename = 'ticket' + str(tk_id) + '.json'
     with open(filename, 'w') as outfile:
         outfile.write(ticket_json)
-    api = ipfsapi.Client(IPFS_ADDRESS, IPFS_PORT)
+    api = ipfshttpclient.connect()
     res = api.add(filename)
     return 'https://ipfs.io/ipfs/' + res['Hash']
 
@@ -47,8 +47,8 @@ def generate_code_url(tk_id: int, origin: str, destination: str, start_date: str
     :return: the URL of the generated ticket QR code.
     """
     # Dummy file
-    filename = "static/assets/qr/qrcode.txt"
-    api = ipfsapi.Client(IPFS_ADDRESS, IPFS_PORT)
+    filename = "src/static/assets/qr/qrcode.txt"
+    api = ipfshttpclient.connect()
     res = api.add(filename)
     return 'https://ipfs.io/ipfs/' + res['Hash']
 
@@ -150,8 +150,8 @@ def buy_ticket():
             trainType=ticket.train_type,
             trainClass=ticket.train_class,
             fare=ticket.fare,
-            startDate=ticket.start_date,
-            endDate=ticket.end_date,
+            startDate=ticket.start_date_as_int,
+            endDate=ticket.end_date_as_int,
             dbId=ticket.db_id,
             ticketURI=ticket_uri
         ).call()
@@ -170,8 +170,8 @@ def buy_ticket():
         trainType=ticket.train_type,
         trainClass=ticket.train_class,
         fare=ticket.fare,
-        startDate=ticket.start_date,
-        endDate=ticket.end_date,
+        startDate=ticket.start_date_as_int,
+        endDate=ticket.end_date_as_int,
         dbId=ticket.db_id,
         ticketURI=ticket_uri
     ).transact()
@@ -182,9 +182,9 @@ def buy_ticket():
     return jsonify(response), 200
 
 
-@TICKETS_API.route("/refund", methods=['GET'])
+@TICKETS_API.route("/refund_ticket", methods=['GET'])
 def refund_ticket():
-    ticket_id = request.args.get('ticket_id')
+    ticket_id = int(request.args.get('ticket_id'))
 
     try:
         contract.functions.refund(ticketId=ticket_id).call()
