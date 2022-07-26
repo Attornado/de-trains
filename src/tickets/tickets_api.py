@@ -5,7 +5,7 @@ from web3 import exceptions
 from src.contract_setup import web3, contract
 from typing import final
 from flask import Blueprint
-from src.tickets.ticket_db import retrieve_and_check_ticket_by_id
+from src.tickets.ticket_db import retrieve_and_check_ticket_by_id, retrieve_filter
 
 
 TICKETS_API = Blueprint('TICKETS_API', __name__)
@@ -178,3 +178,57 @@ def use_ticket():
 
     response = {"message": "Ticket usage setted successfully!"}
     return jsonify(response), 200
+
+
+@TICKETS_API.route("/retreieve_tickets", methods=["GET"])
+def retrieve_tickets():
+
+    # Setup parameters
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    train_type = request.args.get("train_type")
+    train_class = request.args.get("train_class")
+    fare = request.args.get("fare")
+
+    max_price = request.args.get("max_price")
+    if max_price is not None and max_price != "":
+        max_price = float(max_price)
+
+    db_id = request.args.get('db_id')
+    if db_id is not None and db_id != "":
+        db_id = int(db_id)
+
+    offset = request.args.get('offset')
+    if offset is not None and offset != "":
+        offset = int(offset)
+
+    limit = request.args.get('limit')
+    if limit is not None and limit != "":
+        limit = int(limit)
+
+    # Retrieve results
+    results = retrieve_filter(
+        origin=origin,
+        destination=destination,
+        start_date=start_date,
+        end_date=end_date,
+        train_type=train_type,
+        fare=fare,
+        max_price=max_price,
+        train_class=train_class,
+        db_id=db_id,
+        offset=offset,
+        limit=limit
+    )
+
+    # Convert them in json
+    results_json = [result.jsonify_full() for result in results]
+
+    # Build and return response
+    response = {"tickets": results_json, "message": "Tickets retrieved successfully!"}
+    return jsonify(response), 400
+
+
+

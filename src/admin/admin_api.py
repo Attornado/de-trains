@@ -2,6 +2,7 @@ from flask import jsonify, request, render_template
 from web3 import exceptions
 import web3
 from src.contract_setup import web3, contract
+from src.tickets.ticket_db import insert_ticket, update_ticket, delete_ticket
 from flask import Blueprint
 
 
@@ -78,6 +79,79 @@ def withdraw():
         return jsonify({
             "message": "Founds transfer to address" + str(address) + " withdrawal failed: you are not an admin!"
         }), 400
+
+
+@ADMIN_API.route("/admin/insert_ticket", methods=["GET"])
+def insert_ticket():
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    train_type = request.args.get("train_type")
+    train_class = request.args.get("train_class")
+    fare = request.args.get("fare")
+    price = float(request.args.get("price"))
+
+    try:
+        new_ticket = insert_ticket(
+            origin=origin,
+            destination=destination,
+            start_date=start_date,
+            end_date=end_date,
+            train_type=train_type,
+            train_class=train_class,
+            fare=fare,
+            price=price
+        )
+        response = {"message": f"Datebase ticket with id: {new_ticket.db_id} created successfully!"}
+        return jsonify(response), 200
+    except BaseException as e:
+        return jsonify({
+            "message": f"Database ticket creation failed: {e}"
+        }), 400
+
+
+@ADMIN_API.route("/admin/update_ticket", methods=["GET"])
+def update_ticket():
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    train_type = request.args.get("train_type")
+    train_class = request.args.get("train_class")
+    fare = request.args.get("fare")
+    db_id = int(request.args.get('db_id'))
+
+    price = request.args.get("price")
+    if price is not None and price != "":
+        price = float(price)
+
+    updated_ticket = update_ticket(
+        origin=origin,
+        destination=destination,
+        start_date=start_date,
+        end_date=end_date,
+        train_type=train_type,
+        train_class=train_class,
+        fare=fare,
+        price=price,
+        db_id=db_id
+    )
+
+    if updated_ticket is not None:
+        return jsonify({"message": f"Ticket with id: {db_id} updated successfully!"}), 200
+    else:
+        return jsonify({"message": f"Ticket with id {db_id} not updated because it doesn't exist!"}), 400
+
+
+@ADMIN_API.route("/admin/delete_ticket", methods=["GET"])
+def delete_ticket():
+    db_id = int(request.args.get('db_id'))
+
+    if delete_ticket(db_id):
+        return jsonify({"message": f"Ticket with id: {db_id} deleted successfully!"}), 200
+    else:
+        return jsonify({"message": f"Ticket with id {db_id} not deleted because it doesn't exist!"}), 400
 
 
 '''
