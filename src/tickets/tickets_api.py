@@ -180,9 +180,8 @@ def use_ticket():
     return jsonify(response), 200
 
 
-@TICKETS_API.route("/retreieve_tickets", methods=["GET"])
+@TICKETS_API.route("/retrieve_tickets", methods=["GET"])
 def retrieve_tickets():
-
     # Setup parameters
     origin = request.args.get('origin')
     destination = request.args.get('destination')
@@ -195,18 +194,26 @@ def retrieve_tickets():
     max_price = request.args.get("max_price")
     if max_price is not None and max_price != "":
         max_price = float(max_price)
+    else:
+        max_price = None
 
     db_id = request.args.get('db_id')
     if db_id is not None and db_id != "":
         db_id = int(db_id)
+    else:
+        db_id = None
 
     offset = request.args.get('offset')
     if offset is not None and offset != "":
         offset = int(offset)
+    else:
+        offset = None
 
     limit = request.args.get('limit')
     if limit is not None and limit != "":
         limit = int(limit)
+    else:
+        limit = None
 
     # Retrieve results
     results = retrieve_filter(
@@ -228,7 +235,7 @@ def retrieve_tickets():
 
     # Build and return response
     response = {"tickets": results_json, "message": "Tickets retrieved successfully!"}
-    return jsonify(response), 400
+    return jsonify(response), 200
 
 
 

@@ -1,4 +1,7 @@
 from typing import Optional
+
+import pymongo
+
 from src.db_utils import get_db_connection, CONNECTION_STRING, DB_NAME, COLLECTION_NAME
 from src.tickets.ticket import Ticket
 
@@ -77,27 +80,34 @@ def retrieve_filter(origin: Optional[str] = None, destination: Optional[str] = N
     tickets: list[Ticket] = []
 
     # Set query parameters according to given parameters
-    if origin is not None:
+    if origin is not None and origin != "":
         query['origin'] = origin
-    if destination is not None:
+    if destination is not None and destination != "":
         query['destination'] = destination
-    if start_date is not None:
+    if start_date is not None and start_date != "":
         query['start_date'] = start_date
-    if end_date is not None:
+    if end_date is not None and start_date != "":
         query['end_date'] = end_date
-    if train_type is not None:
+    if train_type is not None and train_type != "":
         query['train_type'] = train_type
-    if train_class is not None:
+    if train_class is not None and train_class != "":
         query['train_class'] = train_class
-    if fare is not None:
+    if fare is not None and fare != "":
         query['fare'] = fare
-    if max_price is not None:
+    if max_price is not None and max_price != "":
         query['price'] = {"$lte": max_price}  # price must be less than or equal to max_price
     if db_id is not None:
         query['db_id'] = db_id
 
     # Get results
-    results = collection.find(query).skip(offset).limit(limit)  # should return only 1 element
+    if offset is not None and limit is not None:
+        results = collection.find(query).skip(offset).limit(limit)
+    elif offset is not None and limit is None:
+        results = collection.find(query).skip(offset)
+    elif offset is None and limit is not None:
+        results = collection.find(query).limit(limit)
+    else:
+        results = collection.find(query)
 
     # For each result, create a Ticket containing retrieved ticket parameters, and add it to the return list
     for result in results:
@@ -109,7 +119,7 @@ def retrieve_filter(origin: Optional[str] = None, destination: Optional[str] = N
         train_class_res = result.get('train_class')
         fare_res = result.get('fare')
         price_res = result.get('price')
-        db_id_res = result.get('id')
+        db_id_res = int(result.get('id'))
 
         ticket = Ticket(
             origin=origin_res,
@@ -147,7 +157,7 @@ def insert_ticket(origin: str, destination: str, start_date: str, end_date: str,
 
     try:
         # Get ticket max id
-        result = collection.find().sort({"id": -1}).limit(1).next()  # should return only 1 element
+        result = collection.find().sort("id", pymongo.DESCENDING).limit(1).next()  # should return only 1 element
         max_id = int(result["id"])
         db_id = max_id + 1
 
@@ -202,21 +212,21 @@ def update_ticket(db_id: int, origin: Optional[str] = None, destination: Optiona
     update_query = {}
 
     # Set update query parameters according to given parameters
-    if origin is not None:
+    if origin is not None and origin != "":
         update_query['origin'] = origin
-    if destination is not None:
+    if destination is not None and destination != "":
         update_query['destination'] = destination
-    if start_date is not None:
+    if start_date is not None and start_date != "":
         update_query['start_date'] = start_date
-    if end_date is not None:
+    if end_date is not None and end_date != "":
         update_query['end_date'] = end_date
-    if train_type is not None:
+    if train_type is not None and train_type != "":
         update_query['train_type'] = train_type
-    if train_class is not None:
+    if train_class is not None and train_class != "":
         update_query['train_class'] = train_class
-    if fare is not None:
+    if fare is not None and fare != "":
         update_query['fare'] = fare
-    if price is not None:
+    if price is not None and price != "":
         update_query['price'] = price  # price must be less than or equal to max_price
 
     # Get db connection object

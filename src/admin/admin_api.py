@@ -82,7 +82,7 @@ def withdraw():
 
 
 @ADMIN_API.route("/admin/insert_ticket", methods=["GET"])
-def insert_ticket():
+def insert_ticket_api():
     origin = request.args.get('origin')
     destination = request.args.get('destination')
     start_date = request.args.get("start_date")
@@ -112,7 +112,7 @@ def insert_ticket():
 
 
 @ADMIN_API.route("/admin/update_ticket", methods=["GET"])
-def update_ticket():
+def update_ticket_api():
     origin = request.args.get('origin')
     destination = request.args.get('destination')
     start_date = request.args.get("start_date")
@@ -145,7 +145,7 @@ def update_ticket():
 
 
 @ADMIN_API.route("/admin/delete_ticket", methods=["GET"])
-def delete_ticket():
+def delete_ticket_api():
     db_id = int(request.args.get('db_id'))
 
     if delete_ticket(db_id):
