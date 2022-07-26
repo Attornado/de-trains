@@ -2,16 +2,14 @@ import json
 from typing import final
 from pymongo import MongoClient
 import numpy as np
+from src.db_utils import DB_NAME, COLLECTION_NAME, CONNECTION_STRING, get_db_connection
 from src.preprocessing.utils import PLOT_DIR, csv_to_json, load_json, clear_dataframe, json_to_dataframe, plot_stats, \
     change_values
 
 
-DB_NAME: final = "TrainTickets"
-COLLECTION_NAME: final = "Tickets"
 ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
 ORIGINAL_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\renfe.json"
 CLEANED_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\cleaned_renfe.json"
-CONNECTION_STRING: final = "mongodb+srv://Attornado:andrea22@cluster0.t3es8fi.mongodb.net/?retryWrites=true&w=majority"
 _MAX_ROWS: final = 50000
 
 
@@ -56,12 +54,10 @@ def main():
 
     if connect != 0:
         # Create connection
-        client = MongoClient(CONNECTION_STRING)
-        db = client[DB_NAME]
-        collection = db[COLLECTION_NAME]
+        collection = get_db_connection(CONNECTION_STRING, DB_NAME, COLLECTION_NAME)
 
         # Convert dataframe to json
-        df_json = df.to_json(orient='records')
+        df_json = df[:11].to_json(orient='records')
 
         # Insert values into db
         collection.insert_many(json.loads(df_json))

@@ -94,7 +94,7 @@ def clear_dataframe(df: pd.DataFrame, undesired_columns: Optional[list[str]] = N
 
     # Remove undesired columns
     if undesired_columns is None:
-        df.drop(columns=undesired_columns, inplace=True)
+        df = df.drop(columns=undesired_columns, inplace=True)
 
     # Remove null/empty/nan values
     for column in tqdm(df.columns, desc="Removing null/empty/nan values"):

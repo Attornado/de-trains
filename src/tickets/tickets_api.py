@@ -3,9 +3,9 @@ from flask import jsonify, request
 import ipfshttpclient
 from web3 import exceptions
 from src.contract_setup import web3, contract
-from src.tickets.ticket import Ticket
-from typing import final, Optional
+from typing import final
 from flask import Blueprint
+from src.tickets.ticket_db import retrieve_and_check_ticket_by_id
 
 
 TICKETS_API = Blueprint('TICKETS_API', __name__)
@@ -51,38 +51,6 @@ def generate_code_url(tk_id: int, origin: str, destination: str, start_date: str
     api = ipfshttpclient.connect()
     res = api.add(filename)
     return 'https://ipfs.io/ipfs/' + res['Hash']
-
-
-def retrieve_and_check_ticket_by_id(origin: str, destination: str, start_date: str, end_date: str,
-                                    train_type: str, train_class: str, fare: str, price: float, db_id: int) -> \
-        Optional[Ticket]:
-    """
-    Retrieves ticket by database, checking if it exists a ticket with the given parameters and returning it.
-
-    :param origin: start station of the ticket.
-    :param destination: destination station of the ticket.
-    :param start_date: start of the train ride.
-    :param end_date: end of the train ride.
-    :param train_type: train type of the ride.
-    :param train_class: train class of the ride.
-    :param fare: fare of the train ride.
-    :param price: price of the ticket.
-    :param db_id: database id of the ticket.
-    :return: the ticket having the given parameters retrieved from the database, if it exists, None otherwise.
-    """
-    # TODO: check if ticket is in the database
-
-    return Ticket(
-        origin=origin,
-        destination=destination,
-        start_date=start_date,
-        end_date=end_date,
-        train_type=train_type,
-        train_class=train_class,
-        fare=fare,
-        price=price,
-        db_id=db_id
-    )
 
 
 @TICKETS_API.route("/buy_ticket", methods=['GET'])
@@ -154,7 +122,7 @@ def buy_ticket():
             endDate=ticket.end_date_as_int,
             dbId=ticket.db_id,
             ticketURI=ticket_uri
-        ).call()
+        ).call({'value': ticket.price_wei})
     except exceptions.SolidityError as e:
         return jsonify({"message": "Ticket buy failed: " + str(e)}), 400
     if tk_id == 0:
@@ -174,7 +142,7 @@ def buy_ticket():
         endDate=ticket.end_date_as_int,
         dbId=ticket.db_id,
         ticketURI=ticket_uri
-    ).transact()
+    ).transact({'value': ticket.price_wei})
 
     ticket.id = tk_id
     ticket_json = ticket.jsonify_full()
