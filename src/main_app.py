@@ -48,7 +48,7 @@ def buy_product():
 @app.route('/products')
 @app.route('/products.html')
 def products():
-    return render_template('./products.html')
+    return render_template('./buyProduct.html')
 
 
 @app.route('/refund')

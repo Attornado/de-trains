@@ -92,23 +92,27 @@ def insert_ticket_api():
     fare = request.args.get("fare")
     price = float(request.args.get("price"))
 
-    try:
-        new_ticket = insert_ticket(
-            origin=origin,
-            destination=destination,
-            start_date=start_date,
-            end_date=end_date,
-            train_type=train_type,
-            train_class=train_class,
-            fare=fare,
-            price=price
-        )
-        response = {"message": f"Datebase ticket with id: {new_ticket.db_id} created successfully!"}
-        return jsonify(response), 200
-    except BaseException as e:
-        return jsonify({
-            "message": f"Database ticket creation failed: {e}"
-        }), 400
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+        try:
+            new_ticket = insert_ticket(
+                origin=origin,
+                destination=destination,
+                start_date=start_date,
+                end_date=end_date,
+                train_type=train_type,
+                train_class=train_class,
+                fare=fare,
+                price=price
+            )
+            response = {"message": f"Datebase ticket with id: {new_ticket.db_id} created successfully!"}
+            return jsonify(response), 200
+        except BaseException as e:
+            return jsonify({
+                "message": f"Database ticket creation failed: {e}"
+            }), 400
+    else:
+        return jsonify({"message": "Ticket insertion failed: you are not an admin!"}), 400
 
 
 @ADMIN_API.route("/admin/update_ticket", methods=["GET"])
@@ -126,32 +130,40 @@ def update_ticket_api():
     if price is not None and price != "":
         price = float(price)
 
-    updated_ticket = update_ticket(
-        origin=origin,
-        destination=destination,
-        start_date=start_date,
-        end_date=end_date,
-        train_type=train_type,
-        train_class=train_class,
-        fare=fare,
-        price=price,
-        db_id=db_id
-    )
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+        updated_ticket = update_ticket(
+            origin=origin,
+            destination=destination,
+            start_date=start_date,
+            end_date=end_date,
+            train_type=train_type,
+            train_class=train_class,
+            fare=fare,
+            price=price,
+            db_id=db_id
+        )
 
-    if updated_ticket is not None:
-        return jsonify({"message": f"Ticket with id: {db_id} updated successfully!"}), 200
+        if updated_ticket is not None:
+            return jsonify({"message": f"Ticket with id: {db_id} updated successfully!"}), 200
+        else:
+            return jsonify({"message": f"Ticket with id {db_id} not updated because it doesn't exist!"}), 400
     else:
-        return jsonify({"message": f"Ticket with id {db_id} not updated because it doesn't exist!"}), 400
+        return jsonify({"message": "Ticket update failed: you are not an admin!"}), 400
 
 
 @ADMIN_API.route("/admin/delete_ticket", methods=["GET"])
 def delete_ticket_api():
     db_id = int(request.args.get('db_id'))
 
-    if delete_ticket(db_id):
-        return jsonify({"message": f"Ticket with id: {db_id} deleted successfully!"}), 200
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+        if delete_ticket(db_id):
+            return jsonify({"message": f"Ticket with id: {db_id} deleted successfully!"}), 200
+        else:
+            return jsonify({"message": f"Ticket with id {db_id} not deleted because it doesn't exist!"}), 400
     else:
-        return jsonify({"message": f"Ticket with id {db_id} not deleted because it doesn't exist!"}), 400
+        return jsonify({"message": "Ticket delete failed: you are not an admin!"}), 400
 
 
 '''
