@@ -83,25 +83,60 @@ def load_json(path: str) -> dict:
     return json_dict
 
 
-def clear_dataframe(df: pd.DataFrame, undesired_columns: Optional[list[str]] = None) -> pd.DataFrame:
+def remove_columns(df: pd.DataFrame, undesired_columns: Optional[list[str]]) -> pd.DataFrame:
     """
     Removes given undesired columns and any row having null/empty/nan values from the given dataframe.
 
-    :param df: dataframe to remove the null/empty/nan values from.
+    :param df: dataframe to remove the columns from.
     :param undesired_columns: list of columns to remove from the given dataframe (default: None).
-    :return: a dataframe with rows having null/empty/nan values removed (although operation is done in-place).
+    :return: a dataframe identical to the given one, but without the given columns.
     """
 
-    # Remove undesired columns
-    if undesired_columns is None:
-        df = df.drop(columns=undesired_columns, inplace=True)
-
-    # Remove null/empty/nan values
-    for column in tqdm(df.columns, desc="Removing null/empty/nan values"):
-        df[column].replace('', np.nan, inplace=True)
-        df.dropna(subset=[column], inplace=True)
+    # Remove undesired columnsì
+    df.drop(columns=undesired_columns, inplace=True)
 
     return df
+
+
+def drop_null_values(df: pd.DataFrame, columns=None):
+    """
+    Removes any row having null/empty/nan values in the given columns from the given dataframe.
+
+    :param df: dataframe to remove the null/empty/nan values from.
+    :param columns: list of columns to remove the null/empty/nan values from (default: None, which means all columns).
+    :return: a dataframe with rows having null/empty/nan values in the given columns removed (although operation is done
+        in-place).
+    """
+    if columns is None:
+        columns = df.columns
+
+    # Remove null/empty/nan values
+    for column in tqdm(columns, desc="Removing null/empty/nan values"):
+        df[column].replace('', np.nan, inplace=True)
+        df.dropna(subset=[column], inplace=True)
+    return df
+
+
+'''
+def estimate_null_values(df: pd.DataFrame, columns=None, metric: str = 'mode'):
+    """
+    Replaces null/empty/nan values from the given dataframe with metrics.
+
+    :param df: dataframe to remove the null/empty/nan values from.
+    :param columns: list of columns to remove the null/empty/nan values from (default: None, which means all columns).
+    :param
+    :return: a dataframe with rows having null/empty/nan values in the given columns removed (although operation is done
+        in-place).
+    """
+    if columns is None:
+        columns = df.columns
+
+    # Remove null/empty/nan values
+    for column in tqdm(columns, desc="Removing null/empty/nan values"):
+        df[column].replace('', np.nan, inplace=True)
+        df.dropna(subset=[column], inplace=True)
+    return df
+'''
 
 
 def json_to_dataframe(path: str) -> pd.DataFrame:
