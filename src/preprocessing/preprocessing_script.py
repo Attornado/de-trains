@@ -1,9 +1,10 @@
 import json
 from typing import final
 import numpy as np
+import pandas as pd
 from src.db_utils import DB_NAME, COLLECTION_NAME, CONNECTION_STRING, get_db_connection
-from src.preprocessing.utils import PLOT_DIR, csv_to_json, load_json, clear_dataframe, json_to_dataframe, plot_stats, \
-    change_values
+from src.preprocessing.utils import PLOT_DIR, csv_to_json, load_json, remove_columns, json_to_dataframe, plot_stats, \
+    change_values, drop_null_values
 
 
 ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
@@ -14,27 +15,42 @@ _MAX_ROWS: final = 50000
 
 def main():
     convert = int(input("Convert csv to json (1: yes, 0: no)? "))
+    csv_path = ORIGINAL_DATASET_DIR
 
     # Load or create json dataset
     if convert != 0:
-        csv_path = ORIGINAL_DATASET_DIR
         json_dict = csv_to_json(csv_path, export_path=ORIGINAL_DATASET_DIR_JSON, add_id=True, max_rows=_MAX_ROWS)
     else:
         json_dict = load_json(ORIGINAL_DATASET_DIR_JSON)
 
-    # Convert json to dataframe
-    df = json_to_dataframe(ORIGINAL_DATASET_DIR_JSON)
-    df = clear_dataframe(df, undesired_columns=['insert_date'])
+    load_from_csv = int(input("Load dataframe directly from csv (1: yes, 0: no)? "))
+    if load_from_csv != 0:
+        # Load dataframe from csv
+        df = pd.read_csv(ORIGINAL_DATASET_DIR)
+    else:
+        # Convert json to dataframe
+        df = json_to_dataframe(ORIGINAL_DATASET_DIR_JSON)
+
+    # Clean-up the dataset and add id column
+    df['id'] = np.arange(start=0, stop=len(df))
+    df = remove_columns(df, undesired_columns=['insert_date'])
+    df = drop_null_values(
+        df,
+        columns=['origin', 'destination', 'train_type', 'train_class', 'fare', 'start_date', 'end_date', 'price']
+    )
+    # df = estimate_null_values(df, columns=['price'])
 
     # Convert price to float
     df['price'] = df['price'].astype(np.float32)
 
-    # Change some values to improve variance
-    change_values(
-        df=df,
-        column_alternatives={'origin': ["VALENCIA", "SEVILLA"], "destination": ["BARCELONA", "MADRID"]},
-        n_changes=0
-    )
+    change = int(input("Change values to improve variance (1: yes, 0: no)? "))
+    if change != 0:
+        # Change some values to improve variance
+        change_values(
+            df=df,
+            column_alternatives={'origin': ["VALENCIA", "SEVILLA"], "destination": ["BARCELONA", "MADRID"]},
+            n_changes=0
+        )
 
     # Plot stats
     print(df.info())
