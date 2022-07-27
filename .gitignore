@@ -137,3 +137,4 @@ node_modules
 /node_modules/lite-server
 /node_modules/.bin
 /node_modules/.bin/lite-server
+/src/configurations.json

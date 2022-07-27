@@ -1,6 +1,5 @@
 from web3 import Web3, HTTPProvider
 import json
-import os
 
 
 # Truffle development blockchain address
@@ -13,8 +12,9 @@ web3 = Web3(HTTPProvider(blockchain_address))
 web3.eth.defaultAccount = web3.eth.accounts[0]
 set_account_flag = False
 
-# Deployed contract address (see `migrate` command output: `contract address`)
-deployed_contract_address = "0x4775a9513862F5bAE15a3D5CB30BbfC4C23e3e7C"
+# Load contract address
+with open("src/configurations.json") as file:
+    deployed_contract_address = json.load(file)['contract_address']  # load contract address
 
 # Path to the compiled contract JSON file
 compiled_contract_path = 'build/contracts/TicketStore.json'
