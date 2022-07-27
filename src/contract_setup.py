@@ -1,6 +1,5 @@
 from web3 import Web3, HTTPProvider
 import json
-import os
 
 
 # Truffle development blockchain address
