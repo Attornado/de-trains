@@ -1,6 +1,5 @@
 import json
 from typing import final
-from pymongo import MongoClient
 import numpy as np
 from src.db_utils import DB_NAME, COLLECTION_NAME, CONNECTION_STRING, get_db_connection
 from src.preprocessing.utils import PLOT_DIR, csv_to_json, load_json, clear_dataframe, json_to_dataframe, plot_stats, \
