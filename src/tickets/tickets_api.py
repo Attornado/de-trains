@@ -1,5 +1,5 @@
 import json
-from flask import jsonify, request
+from flask import jsonify, request, render_template
 import ipfshttpclient
 from web3 import exceptions
 from src.contract_setup import web3, contract
@@ -11,6 +11,7 @@ from src.tickets.ticket_db import retrieve_and_check_ticket_by_id, retrieve_filt
 TICKETS_API = Blueprint('TICKETS_API', __name__)
 IPFS_ADDRESS: final = "127.0.0.1:5001"
 IPFS_PORT: final = 5001
+_N_TICKETS_PER_PAGE: final = 5
 
 
 def generate_ticket_uri(ticket_json):
@@ -68,6 +69,7 @@ def buy_ticket():
     db_id = int(request.args.get('db_id'))
 
     # Check if it exists a ticket matching the given parameters
+    '''
     ticket = retrieve_and_check_ticket_by_id(
         origin=origin,
         destination=destination,
@@ -79,6 +81,11 @@ def buy_ticket():
         price=price,
         db_id=db_id
     )
+    '''
+    try:
+        ticket = retrieve_filter(db_id=db_id)[0]
+    except IndexError:
+        ticket = None
 
     if ticket is None:
         return jsonify({
@@ -93,15 +100,15 @@ def buy_ticket():
     contract.functions.nextId().transact()  # notarization
     url = generate_code_url(
         tk_id=estimate_tk_id,
-        origin=origin,
-        destination=destination,
-        start_date=start_date,
-        end_date=end_date,
-        train_type=train_type,
-        train_class=train_class,
-        fare=fare,
-        price=price,
-        db_id=db_id
+        origin=ticket.origin,
+        destination=ticket.destination,
+        start_date=ticket.start_date,
+        end_date=ticket.end_date,
+        train_type=ticket.train_type,
+        train_class=ticket.train_class,
+        fare=ticket.fare,
+        price=ticket.price,
+        db_id=ticket.db_id
     )
     ticket.url = url
 
@@ -238,4 +245,80 @@ def retrieve_tickets():
     return jsonify(response), 200
 
 
+@TICKETS_API.route('/buy_product')
+@TICKETS_API.route('/buy_product.html')
+@TICKETS_API.route('/buyProduct.html')
+@TICKETS_API.route('/products')
+@TICKETS_API.route('/products.html')
+def show_tickets():
+    # Setup parameters
+    origin = request.args.get('origin')
+    destination = request.args.get('destination')
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    train_type = request.args.get("train_type")
+    train_class = request.args.get("train_class")
+    fare = request.args.get("fare")
 
+    max_price = request.args.get("max_price")
+    if max_price is not None and max_price != "":
+        max_price = float(max_price)
+    else:
+        max_price = None
+
+    db_id = request.args.get('db_id')
+    if db_id is not None and db_id != "":
+        db_id = int(db_id)
+    else:
+        db_id = None
+
+    offset = request.args.get('offset')
+    if offset is not None and offset != "":
+        offset = int(offset)
+    else:
+        offset = None
+
+    limit = request.args.get('limit')
+    if limit is not None and limit != "":
+        limit = int(limit)
+    else:
+        limit = None
+
+    page = request.args.get('page')
+    if page is not None and page != "":
+        page = int(page)
+        offset = _N_TICKETS_PER_PAGE*page
+    else:
+        page = 0
+
+    if limit is None:
+        limit = _N_TICKETS_PER_PAGE
+
+    # Retrieve results
+    results = retrieve_filter(
+        origin=origin,
+        destination=destination,
+        start_date=start_date,
+        end_date=end_date,
+        train_type=train_type,
+        fare=fare,
+        max_price=max_price,
+        train_class=train_class,
+        db_id=db_id,
+        offset=offset,
+        limit=limit
+    )
+    return render_template(
+        './buy_product.html',
+        tickets=results,
+        page=page,
+        origin=origin,
+        destination=destination,
+        start_date=start_date,
+        end_date=end_date,
+        train_type=train_type,
+        fare=fare,
+        max_price=max_price,
+        train_class=train_class,
+        db_id=db_id,
+    )

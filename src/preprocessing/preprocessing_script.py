@@ -43,6 +43,10 @@ def main():
     # Convert price to float
     df['price'] = df['price'].astype(np.float32)
 
+    # Change year in the date column to next year
+    df['start_date'] = df['start_date'].replace(to_replace="2019", value="2023", regex=True)
+    df['end_date'] = df['end_date'].replace(to_replace="2019", value="2023", regex=True)
+
     change = int(input("Change values to improve variance (1: yes, 0: no)? "))
     if change != 0:
         # Change some values to improve variance
@@ -72,7 +76,7 @@ def main():
         collection = get_db_connection(CONNECTION_STRING, DB_NAME, COLLECTION_NAME)
 
         # Convert dataframe to json
-        df_json = df[:11].to_json(orient='records')
+        df_json = df.sample(n=_MAX_ROWS, axis=0).to_json(orient='records')
 
         # Insert values into db
         collection.insert_many(json.loads(df_json))
