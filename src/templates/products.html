@@ -1,77 +1,246 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Products - Brand</title>
-    <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i">
-    <link rel="stylesheet" href="../static/assets/css/Animated-Pretty-Product-List-v12.css">
-    <link rel="stylesheet" href="../static/assets/css/gift-product-small-double.css">
-</head>
+{% include 'head.html' %}
 
-<body style="background:linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('../static/assets/img/bg.jpg');">
-    <h1 class="text-center text-white d-none d-lg-block site-heading"><span class="text-primary site-heading-upper mb-3">A NEW WAY TO BUY TICKETS&nbsp;</span><span class="site-heading-lower">SHIBA TICKETS</span></h1>
-    <nav class="navbar navbar-light navbar-expand-lg bg-dark py-lg-4" id="mainNav">
-        <div class="container"><a class="navbar-brand text-uppercase d-lg-none text-expanded" href="#">TICKETS</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div
-                class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="nav navbar-nav mx-auto">
-                     <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="about">About us</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="products">Products</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="buy_product">Buy</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="refund">Refund</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="login">Login</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="admin">Admin</a></li>
-                </ul>
-        </div>
-        </div>
-    </nav>
+<body style="background: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('../static/assets/img/bg.jpg');height: 957px;">
+    {% include 'header.html' %}
     <section class="page-section">
         <div class="container">
             <div class="product-item">
-                <div class="d-flex product-item-title">
-                    <div class="d-flex mr-auto bg-faded p-5 rounded">
-                        <h2 class="section-heading mb-0"><span class="section-heading-upper">Blended to Perfection</span><span class="section-heading-lower">SHORT</span></h2>
+                <div class="d-flex product-item-title"></div>
+                <form class="align-items-center" action="/products" method="get">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Filter</h4>
+                            <div class="form-group">
+                            	<label style="color: rgb(246,247,248);">Date</label>
+                            	<select class="form-control pb-2" id="daySelect" name="start_date"> </select>
+                            </div>
+                            <label style="color: rgb(246,247,248);" for="origin-filter">
+                            		Start
+                            </label>
+
+                            <div class="form-group">
+                               <input type="text" class="form-control pb-2" id="origin-filter" name="origin" oninput="this.value = this.value.toUpperCase()" placeholder="Start">
+                            </div>
+
+                            <label style="color: rgb(246,247,248);" for="destination-filter">
+                                Destination
+                            </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input type="text" class="form-control pb-2" id="destination-filter" name="destination" oninput="this.value = this.value.toUpperCase()" placeholder="Destination">
+                                </div>
+                            </div>
+                            <label style="color: rgb(246,247,248);" for="max-price-filter">
+                                Maximum price
+                            </label>
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <input type="number" step="0.01" class="form-control pb-2" id="max-price-filter" name="max_price" placeholder="Max price">
+                                </div>
+                            </div>
+                            <input class="btn btn-primary btn-block" type="submit" value="Search" id = "search-btn">
+                        </div>
+                        <div class="col text-center text-sm-center text-md-center text-lg-center text-xl-center">
+                            <img src="../static/assets/img/kisspng-event-tickets-raffle-transparency-airline-ticket-d-openingstijden-olaertsduyn-5d3d7baa328750.865723761564310442207.png" style="width: 328px;margin: 57px;" alt="">
+                        </div>
                     </div>
-                </div><img class="img-fluid d-flex mx-auto product-item-img mb-3 mb-lg-0 rounded" src="../static/assets/img/short.jpg" style="width: 597px;height: 414px;">
-                <div class="bg-faded p-5 rounded">
-                    <p class="mb-0">We take pride in our work, and it shows. Every time you order a beverage from us, we guarantee that it will be an experience worth having. Whether it's our world famous Venezuelan Cappuccino, a refreshing iced herbal tea, or something
-                        as simple as a cup of speciality sourced black coffee, you will be coming back for more.</p>
-                </div>
+                </form>
             </div>
         </div>
-    </section>
-    <section class="page-section">
-        <div class="container">
-            <div class="product-item">
-                <div class="d-flex product-item-title">
-                    <div class="d-flex ml-auto bg-faded p-5 rounded">
-                        <h2 class="section-heading mb-0"><span class="section-heading-upper">Delicious Treats, Good Eats</span><span class="section-heading-lower">MEDIUM</span></h2>
+
+        <div class="container d-flex justify-content-center mt-50 mb-50">
+            <div class="row">
+                <div class="col-md-10">
+
+                    {% block tickets %}
+
+                    {% for ticket in tickets %}
+                    <div class="card card-body text-light bg-dark">
+                        <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
+                            <div class="mr-2 mb-3 mb-lg-0">
+                                <img src="../static/assets/img/kisspng-event-tickets-raffle-transparency-airline-ticket-d-openingstijden-olaertsduyn-5d3d7baa328750.865723761564310442207.png" style="width: 150px;margin: 26px;" alt="">
+                            </div>
+                            <div class="media-body">
+                                <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
+                                    <li class="list-inline-item"><span class="media-title font-weight-semibold" data-abc="true">From: {{ ticket.origin }}</span></li>
+                                    <li class="list-inline-item"><span class="media-title font-weight-semibold" data-abc="true">To: {{ ticket.destination }}</span></li>
+                                </ul>
+
+                                <ul class="list-inline list-inline-dotted mb-0">
+                                    <li class="list-inline-item">Train type: {{ ticket.train_type }}</li>
+                                    <li class="list-inline-item">Class: {{ ticket.train_class }}</li>
+                                </ul>
+
+                                <ul class="list-inline list-inline-dotted mb-0">
+                                    <li class="list-inline-item">Train type: {{ ticket.train_type }}</li>
+                                    <li class="list-inline-item">Class: {{ ticket.train_class }}</li>
+                                </ul>
+
+                                <ul class="list-inline list-inline-dotted mb-0">
+                                    <li class="list-inline-item">Start: {{ ticket.start_date }} </li>
+                                    <li class="list-inline-item">End: {{ ticket.end_date }}</li>
+                                </ul>
+                            </div>
+
+                            <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
+                                <h3 class="mb-0 font-weight-semibold" id="price_display">{{"{:.2f}".format(ticket.price)}}€</h3>
+
+                                <form class="align-items-center" action="/buy_ticket" method="get">
+
+                                    <input type="hidden" class="origin" name="origin" value="{{ ticket.origin }}">
+                                    <input type="hidden" class="destination" name="destination" value="{{ ticket.destination }}">
+                                    <input type="hidden" class="start_date" name="start_date" value="{{ ticket.start_date }}">
+                                    <input type="hidden" class="end_date" name="end_date" value="{{ ticket.end_date }}">
+                                    <input type="hidden" class="train_type" name="train_type" value="{{ ticket.train_type }}">
+                                    <input type="hidden" class="train_class" name="train_class" value="{{ ticket.train_class }}">
+                                    <input type="hidden" class="fare" name="fare" value="{{ ticket.fare }}">
+                                    <input type="hidden" class="price" name="price" value="{{ ticket.price }}">
+                                    <input type="hidden" class="db_id" name="db_id" value="{{ ticket.db_id }}">
+                                    <button type="submit" class="btn btn-warning mt-4 text-white buy-btn"><i class="icon-cart-add mr-2"></i>Buy</button>
+                                </form>
+
+                                {% if admin_flag %}
+                                <form class="align-items-center" action="/admin/update_page" method="get">
+                                    <input type="hidden" class="origin" name="origin" value="{{ ticket.origin }}">
+                                    <input type="hidden" class="destination" name="destination" value="{{ ticket.destination }}">
+                                    <input type="hidden" class="start_date" name="start_date" value="{{ ticket.start_date }}">
+                                    <input type="hidden" class="end_date" name="end_date" value="{{ ticket.end_date }}">
+                                    <input type="hidden" class="train_type" name="train_type" value="{{ ticket.train_type }}">
+                                    <input type="hidden" class="train_class" name="train_class" value="{{ ticket.train_class }}">
+                                    <input type="hidden" class="fare" name="fare" value="{{ ticket.fare }}">
+                                    <input type="hidden" class="price" name="price" value="{{ ticket.price }}">
+                                    <input type="hidden" class="db_id" name="db_id" value="{{ ticket.db_id }}">
+                                    <input type="hidden" class="modify" name="modify" value="modify">
+                                    <button type="submit" class="btn btn-warning mt-4 text-white modify-btn"><i class="icon-cart-add mr-2"></i>Modify</button>
+                                </form>
+                                <form class="align-items-center" action="/admin/delete_ticket" method="get">
+                                    <input type="hidden" class="db_id" name="db_id" value="{{ ticket.db_id }}">
+                                    <input type="hidden" class="reload" name="reload" value="reload">
+                                    <button type="submit" class="btn btn-warning mt-4 text-white delete-btn"><i class="icon-cart-add mr-2"></i>Delete</button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                </div><img class="img-fluid d-flex mx-auto product-item-img mb-3 mb-lg-0 rounded" src="../static/assets/img/medium.jpg">
-                <div class="bg-faded p-5 rounded">
-                    <p class="mb-0">Our seasonal menu features delicious snacks, baked goods, and even full meals perfect for breakfast or lunchtime. We source our ingredients from local, oragnic farms whenever possible, alongside premium vendors for specialty goods.</p>
+                    {% endfor %}
+
+                    {% endblock %}
+
                 </div>
+
             </div>
+
         </div>
-    </section>
-    <section class="page-section">
-        <div class="container">
-            <div class="product-item">
-                <div class="d-flex product-item-title">
-                    <div class="d-flex mx-auto bg-faded p-5 rounded">
-                        <h2 class="section-heading mb-0"><span class="section-heading-upper">From Around the World</span><span class="section-heading-lower">LONG</span></h2>
-                    </div>
-                </div><img class="img-fluid d-flex mx-auto product-item-img mb-3 mb-lg-0 rounded" src="../static/assets/img/long.jpg">
-                <div class="bg-faded p-5 rounded">
-                    <p class="mb-0">Travelling the world for the very best quality coffee is something take pride in. When you visit us, you'll always find new blends from around the world, mainly from regions in Central and South America. We sell our blends in smaller
-                        to large bulk quantities. Please visit us in person for more details.</p>
-                </div>
-            </div>
+        <nav aria-label="..." class="container d-flex justify-content-center">
+            <ul class="pagination">
+                {% block pagination_prev %}
+                    <li class="page-item">
+                        <form class="align-items-center" action="/products" method="get">
+                            {% if origin is not none %}
+                                <input type="hidden" class="origin" name="origin" value="{{ origin }}">
+                            {% endif %}
+
+                            {% if destination is not none %}
+                                <input type="hidden" class="destination" name="destination" value="{{ destination }}">
+                            {% endif %}
+
+                            {% if start_date is not none %}
+                                <input type="hidden" class="start_date" name="start_date" value="{{ start_date }}">
+                            {% endif %}
+
+                            {% if end_date is not none %}
+                                <input type="hidden" class="end_date" name="end_date" value="{{ end_date }}">
+                            {% endif %}
+
+                            {% if train_type is not none %}
+                                <input type="hidden" class="train_type" name="train_type" value="{{ train_type }}">
+                            {% endif %}
+
+                            {% if train_class is not none %}
+                                <input type="hidden" class="train_class" name="train_class" value="{{ train_class }}">
+                            {% endif %}
+
+                            {% if fare is not none %}
+                                <input type="hidden" class="fare" name="fare" value="{{ fare }}">
+                            {% endif %}
+
+                            {% if max_price is not none %}
+                                <input type="hidden" class="max_price" name="max_price" value="{{ max_price }}">
+                            {% endif %}
+
+                            {% if db_id is not none %}
+                                <input type="hidden" class="db_id" name="db_id" value="{{ db_id }}">
+                            {% endif %}
+
+                            {% if page is not none and page > 0 %}
+                                <input type="hidden" class="page" name="page" value="{{ page - 1 }}">
+                                <button type="submit" class="btn btn-warning mt-4 text-white" >Previous ({{ page }})</button>
+                            {% endif %}
+
+                            {% if page is not none and page == 0 %}
+                                <input type="hidden" class="page" name="page" value="{{ page }}">
+                                <button type="submit" class="btn btn-warning mt-4 text-white" disabled>Previous</button>
+                            {% endif %}
+                        </form>
+                    </li>
+                {% endblock %}
+
+                {% block pagination_next %}
+                    <li class="page-item">
+                        <form class="align-items-center" action="/products" method="get">
+                            {% if origin is not none %}
+                                <input type="hidden" class="origin" name="origin" value="{{ origin }}">
+                            {% endif %}
+
+                            {% if destination is not none %}
+                                <input type="hidden" class="destination" name="destination" value="{{ destination }}">
+                            {% endif %}
+
+                            {% if start_date is not none %}
+                                <input type="hidden" class="start_date" name="start_date" value="{{ start_date }}">
+                            {% endif %}
+
+                            {% if end_date is not none %}
+                                <input type="hidden" class="end_date" name="end_date" value="{{ end_date }}">
+                            {% endif %}
+
+                            {% if train_type is not none %}
+                                <input type="hidden" class="train_type" name="train_type" value="{{ train_type }}">
+                            {% endif %}
+
+                            {% if train_class is not none %}
+                                <input type="hidden" class="train_class" name="train_class" value="{{ train_class }}">
+                            {% endif %}
+
+                            {% if fare is not none %}
+                                <input type="hidden" class="fare" name="fare" value="{{ fare }}">
+                            {% endif %}
+
+                            {% if max_price is not none %}
+                                <input type="hidden" class="max_price" name="max_price" value="{{ max_price }}">
+                            {% endif %}
+
+                            {% if db_id is not none %}
+                                <input type="hidden" class="db_id" name="db_id" value="{{ db_id }}">
+                            {% endif %}
+
+                            {% if page is not none %}
+                                <input type="hidden" class="page" name="page" value="{{ page + 1 }}">
+                            {% endif %}
+
+                            <button type="submit" class="btn btn-warning mt-4 text-white" style="margin-left:10px">Next ({{ page + 2 }}) </button>
+                        </form>
+                    </li>
+                {% endblock %}
+            </ul>
+        </nav>
+        <div class="popupBox">
+            <span class="closeButton">&times;</span>
+            <strong class="type"></strong> <!--riempito dinamicamente con lo pseudo-elemento ::after-->
+            <span class="msgContent">Default text.</span>
         </div>
     </section>
     <footer class="footer text-faded text-center py-5">
@@ -84,6 +253,7 @@
     <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/assets/js/Animated-Pretty-Product-List-v12.js"></script>
     <script src="../static/assets/js/current-day.js"></script>
+    <script src="../static/assets/js/formModifier.js"></script>
 </body>
 
 </html>

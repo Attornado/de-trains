@@ -245,9 +245,6 @@ def retrieve_tickets():
     return jsonify(response), 200
 
 
-@TICKETS_API.route('/buy_product')
-@TICKETS_API.route('/buy_product.html')
-@TICKETS_API.route('/buyProduct.html')
 @TICKETS_API.route('/products')
 @TICKETS_API.route('/products.html')
 def show_tickets():
@@ -315,7 +312,7 @@ def show_tickets():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
 
     return render_template(
-        './buy_product.html',
+        './products.html',
         tickets=results,
         page=page,
         origin=origin,
