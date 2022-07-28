@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Products - Brand</title>
+    <link rel="stylesheet" href="../static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i">
+    <link rel="stylesheet" href="../static/assets/css/Animated-Pretty-Product-List-v12.css">
+    <link rel="stylesheet" href="../static/assets/css/gift-product-small-double.css">
+    <link rel="stylesheet" href="../static/assets/css/popup.css">
+</head>
+
+<body style="background: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url('../static/assets/img/bg.jpg');height: 957px;">
+    <h1 class="text-center text-white d-none d-lg-block site-heading" style="color: rgb(255,253,253);"><span class="text-primary site-heading-upper mb-3">A NEW WAY TO BUY TICKETS&nbsp;</span><span class="site-heading-lower">SHIBA TICKETS</span></h1>
+    <nav class="navbar navbar-light navbar-expand-lg bg-dark py-lg-4" id="mainNav">
+        <div class="container"><a class="navbar-brand text-uppercase d-lg-none text-expanded" href="#">TICKETS</a><button data-toggle="collapse" data-target="#navbarResponsive" class="navbar-toggler" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div
+                class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="nav navbar-nav mx-auto">
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="about">About us</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="products">Products</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="buy_product">Buy</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="refund">Refund</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="login">Login</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="admin">Admin</a></li>
+                </ul>
+        </div>
+        </div>
+    </nav>
+    <section class="page-section">
+        <div class="container">
+            <div class="product-item">
+                <div class="d-flex product-item-title"></div>
+                <form class="align-items-center" action="/admin/remove_admin" method="get" style="margin: 0px;margin-top: 8px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Register admin account</h4>
+                            <label for="address_to_admin" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_admin" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="promoteBtn" type="submit">REGISTER</button>
+                        </div>
+                    </div>
+                </form>
+                <!--
+                <form class="align-items-center" action="/admin/remove_admin" method="get" style="margin: 0px;margin-top: 8px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos4">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Remove admin account</h4>
+                            <label for="address_to_remove_admin" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_remove_admin" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="removeAdminBtn" type="submit">REMOVE</button>
+                        </div>
+                    </div>
+                </form> -->
+                <form class="align-items-center" action="/admin/register_ticket_usage_setter" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos1">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Register usage setter account</h4>
+                            <label for="create_usage_setter_addr" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="create_usage_setter_addr" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="registerUsageSetterBtn" type="submit">REGISTER</button>
+                        </div>
+                    </div>
+                </form>
+                <!--
+                <form class="align-items-center" action="/admin/remove_ticket_usage_setter" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos3">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Remove usage setter account</h4>
+                            <label for="remove_usage_setter_addr" style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="remove_usage_setter_addr" name="address" type="text">
+                            </div>
+                            <button class="btn btn-primary btn-block" id="removeUsageSetterBtn" type="submit">REMOVE</button>
+                        </div>
+                    </div>
+                </form> -->
+                <form class="align-items-center" action="/admin/withdraw" method="get" style="margin-top: 20px;">
+                    <div class="form-row d-flex justify-content-center align-items-center p-0 m-0">
+                        <div class="col-lg-6 col-xl-6 p-0 m-0 p-3" id="formConocimientos2">
+                            <h4 class="p-0 m-0 pb-3" style="color: rgb(230,167,86);">Transfer founds</h4><label style="color: rgb(246,247,248);">Address</label>
+                            <div class="form-group">
+                                <input class="form-control" id="address_to_deposit" name="address" type="text">
+                            </div>
+                            <button id="withdrawBtn" class="btn btn-primary btn-block" type="submit">WITHDRAW</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="popupBox">
+            <span class="closeButton">&times;</span>
+            <strong class="type"></strong> <!--riempito dinamicamente con lo pseudo-elemento ::after-->
+            <span class="msgContent">Default text.</span>
+        </div>
+    </section>
+    <footer class="footer text-faded text-center py-5">
+        <div class="container">
+            <p class="m-0 small">Copyright&nbsp;©&nbsp;Brand 2022</p>
+        </div>
+    </footer>
+    <script src="../static/assets/js/jquery.min.js"></script>
+    <script src="../static/assets/js/utility.js"></script>
+    <script src="../static/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/assets/js/Animated-Pretty-Product-List-v12.js"></script>
+    <script src="../static/assets/js/current-day.js"></script>
+    <script src="../static/assets/js/formModifier.js"></script>
+    <script src="../static/assets/js/adminPage.js"></script>
+</body>
+
+</html>

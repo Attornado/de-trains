@@ -128,7 +128,26 @@
                                     <button type="submit" class="btn btn-warning mt-4 text-white buy-btn"><i class="icon-cart-add mr-2"></i>Buy</button>
                                 </form>
 
-
+                                {% if admin_flag %}
+                                <form class="align-items-center" action="/admin/update_page" method="get">
+                                    <input type="hidden" class="origin" name="origin" value="{{ ticket.origin }}">
+                                    <input type="hidden" class="destination" name="destination" value="{{ ticket.destination }}">
+                                    <input type="hidden" class="start_date" name="start_date" value="{{ ticket.start_date }}">
+                                    <input type="hidden" class="end_date" name="end_date" value="{{ ticket.end_date }}">
+                                    <input type="hidden" class="train_type" name="train_type" value="{{ ticket.train_type }}">
+                                    <input type="hidden" class="train_class" name="train_class" value="{{ ticket.train_class }}">
+                                    <input type="hidden" class="fare" name="fare" value="{{ ticket.fare }}">
+                                    <input type="hidden" class="price" name="price" value="{{ ticket.price }}">
+                                    <input type="hidden" class="db_id" name="db_id" value="{{ ticket.db_id }}">
+                                    <input type="hidden" class="modify" name="modify" value="modify">
+                                    <button type="submit" class="btn btn-warning mt-4 text-white modify-btn"><i class="icon-cart-add mr-2"></i>Modify</button>
+                                </form>
+                                <form class="align-items-center" action="/admin/delete_ticket" method="get">
+                                    <input type="hidden" class="db_id" name="db_id" value="{{ ticket.db_id }}">
+                                    <input type="hidden" class="reload" name="reload" value="reload">
+                                    <button type="submit" class="btn btn-warning mt-4 text-white delete-btn"><i class="icon-cart-add mr-2"></i>Delete</button>
+                                </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
