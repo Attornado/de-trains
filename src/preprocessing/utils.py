@@ -8,8 +8,8 @@ from tqdm.auto import tqdm
 
 
 PLOT_DIR: final = "plots/"
-_FONTSIZE_PLOT_CATEGORICAL: final = 8
-_ROTATION_PLOT_CATEGORICAL: final = 15
+_FONTSIZE_PLOT_CATEGORICAL: final = 10
+_ROTATION_PLOT_CATEGORICAL: final = 18
 _FONTSIZE_PLOT_NUMERICAL: final = 11
 _ROTATION_PLOT_NUMERICAL: final = 0
 MODE: final = 'mode'
@@ -151,7 +151,7 @@ def json_to_dataframe(path: str) -> pd.DataFrame:
 
 
 def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_path: Optional[str] = None,
-               show_plot: bool = True):
+               show_plot: bool = True, rotation_label: float = _ROTATION_PLOT_CATEGORICAL, date_column: bool = False):
     """
     Plots and returns stats for the given column of the given dataframe. For categorical data, only mode is computed as
     stat and only barplot is performed, while for numerical data, both boxplot and histogram are computed, alongside
@@ -162,16 +162,19 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
     :param categorical: whatever or not the given column is categorical.
     :param save_path: path to store the plots into.
     :param show_plot: whatever or not to show the plots of the given columns.
+    :param rotation_label: rotation for the labels.
+    :param date_column: whether or not the given column represent a date.
     :return: a dictionary containing the different stats according to the given column type. If given column is
         categorical, then mode only is returned, otherwise mode, mean, median, 4-quantiles, standard deviation and
         variance are returned.
     """
+    plt.rcParams['figure.figsize'] = [10, 8]
     stats = {}
     if categorical:
         # Barplot
         column_value_counts = df[column].value_counts()
         ax = column_value_counts.plot.bar(x=column, y='count', rot=0)
-        plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_CATEGORICAL, rotation=_ROTATION_PLOT_CATEGORICAL)
+        plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_CATEGORICAL, rotation=rotation_label)
 
         # Show and store plot if required
         if save_path is not None:
@@ -181,8 +184,15 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
 
     else:
         # Histogram
-        ax = df[column].astype(np.float32).plot.hist(x=column, y='Frequency', rot=0, bins=10)
-        plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_CATEGORICAL, rotation=_ROTATION_PLOT_CATEGORICAL)
+        if date_column:
+
+            ax = df[column].astype("datetime64").groupby(
+                [df[column].astype("datetime64").dt.year, df[column].astype("datetime64").dt.month]
+            ).count().plot(kind="bar")
+            plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_NUMERICAL, rotation=rotation_label)
+        else:
+            ax = df[column].astype(np.float32).plot.hist(x=column, y='Frequency', rot=0, bins=10)
+            plt.setp(ax.get_xticklabels(), fontsize=_FONTSIZE_PLOT_NUMERICAL, rotation=rotation_label)
 
         # Show and store plot if required
         if save_path is not None:
@@ -190,27 +200,28 @@ def plot_stats(df: pd.DataFrame, column: str, categorical: bool = False, save_pa
         if show_plot:
             plt.show()
 
-        # Boxplot
-        df[column].astype(np.float32).to_frame().boxplot(rot=0)
+        if not date_column:
+            # Boxplot
+            df[column].astype(np.float32).to_frame().boxplot(rot=0)
 
-        # Show and store plot if required
-        if save_path is not None:
+            # Show and store plot if required
+            if save_path is not None:
 
-            # Add "_boxplot" suffix to save path name
-            if save_path.find("."):
-                name = save_path.split('.')[0]
-                extension = save_path.split('.')[1]
-                save_path = f"{name}_boxplot.{extension}"
-            else:
-                save_path = save_path + "_boxplot"
-            plt.savefig(save_path, format='svg')
-        if show_plot:
-            plt.show()
+                # Add "_boxplot" suffix to save path name
+                if save_path.find("."):
+                    name = save_path.split('.')[0]
+                    extension = save_path.split('.')[1]
+                    save_path = f"{name}_boxplot.{extension}"
+                else:
+                    save_path = save_path + "_boxplot"
+                plt.savefig(save_path, format='svg')
+            if show_plot:
+                plt.show()
 
     # Store mode into stats dictionary
     stats[MODE] = df[column].mode().iloc[0]
 
-    if not categorical:
+    if not categorical and not date_column:
         # Store mean into stats dictionary
         stats[MEAN] = df[column].astype(np.float32).mean()
 

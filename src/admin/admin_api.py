@@ -44,7 +44,7 @@ def show_product_form():
                 db_id=int(request.args.get('db_id'))
             )
         else:
-            render_template('./product_form.html', insert=insert, modify=modify)
+            return render_template('./product_form.html', insert=insert, modify=modify)
 
 
 @ADMIN_API.route("/admin/register_admin", methods=["GET"])
