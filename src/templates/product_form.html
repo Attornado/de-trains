@@ -30,7 +30,7 @@
 
                   <div class="form-group">
                     <label for="destination">Destination</label>
-                    <input type="text" class="form-control" id="origin" aria-describedby="destinationHelp" placeholder="Destination City">
+                    <input type="text" class="form-control" id="destination" aria-describedby="destinationHelp" placeholder="Destination City">
                     <small id="destinationHelp" class="form-text text-muted">The destination city.</small>
                   </div>
 
@@ -40,10 +40,30 @@
                     <small id="start_dateHelp" class="form-text text-muted">The departure date and time.</small>
                   </div>
 
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                  <div class="form-group">
+                    <label for="end_date">Arrival Date and Time</label>
+                    <input type="datetime-local" value="2018-06-12T19:30" class="form-control" id="end_date" aria-describedby="end_dateHelp" placeholder="Arrival Date and Time">
+                    <small id="end_dateHelp" class="form-text text-muted">The arrival date and time.</small>
                   </div>
+
+                  <div class="form-group">
+                    <label for="train_type">Train Type</label>
+                    <input type="text" class="form-control" id="train_type" aria-describedby="train_typeHelp" placeholder="Train Type">
+                    <small id="train_typeHelp" class="form-text text-muted">The train type.</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="train_class">Train Class</label>
+                    <input type="text" class="form-control" id="train_class" aria-describedby="train_classHelp" placeholder="Train Class">
+                    <small id="train_classHelp" class="form-text text-muted">The train class.</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="fare">Fare</label>
+                    <input type="text" class="form-control" id="fare" aria-describedby="fareHelp" placeholder="Fare">
+                    <small id="fareHelp" class="form-text text-muted">The fare.</small>
+                  </div>
+                    
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
