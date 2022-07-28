@@ -33,15 +33,15 @@ def show_product_form():
                 './product_form.html',
                 insert=insert,
                 modify=modify,
-                origin = request.args.get('origin'),
-                destination = request.args.get('destination'),
-                start_date = request.args.get("start_date"),
-                end_date = request.args.get("end_date"),
-                train_type = request.args.get("train_type"),
-                train_class = request.args.get("train_class"),
-                fare = request.args.get("fare"),
-                price = float(request.args.get("price")),
-                db_id = int(request.args.get('db_id'))
+                origin=request.args.get('origin'),
+                destination=request.args.get('destination'),
+                start_date=request.args.get("start_date"),
+                end_date=request.args.get("end_date"),
+                train_type=request.args.get("train_type"),
+                train_class=request.args.get("train_class"),
+                fare=request.args.get("fare"),
+                price=float(request.args.get("price")),
+                db_id=int(request.args.get('db_id'))
             )
         else:
             render_template('./product_form.html', insert=insert, modify=modify)
