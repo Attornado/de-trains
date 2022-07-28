@@ -43,12 +43,19 @@ def main():
     df = remove_columns(df, undesired_columns=['insert_date'])
     df = drop_null_values(
         df,
-        columns=['origin', 'destination', 'train_type', 'train_class', 'fare', 'start_date', 'end_date', 'price']
+        columns=['origin', 'destination', 'train_type', 'train_class', 'fare', 'start_date', 'end_date']
     )
     # df = estimate_null_values(df, columns=['price'])
 
     # Convert price to float
     df['price'] = df['price'].astype(np.float32)
+
+    # For each train_class calculate median price
+    medians = df.groupby('train_class')[["price"]].median()
+    print(medians)
+
+    # Replace the nan values of price with medians
+    df['price'] = df['price'].fillna(df.groupby('train_class')['price'].transform('median'))
 
     # Change year in the date column to next year
     df['start_date'] = df['start_date'].replace(to_replace="2019", value="2023", regex=True)
