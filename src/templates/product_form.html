@@ -21,49 +21,68 @@
                         </div>
                     </div>
                 </form>-->
-                <form style="color: white">
+                {% set action = "/admin/update_ticket" if modify is not none else "/admin/insert_ticket" %}
+                <form style="color: white" action="{{ action }}">
                   <div class="form-group">
                     <label for="origin">Origin</label>
-                    <input type="text" class="form-control" id="origin" aria-describedby="originHelp" placeholder="Origin City">
+                    <input type="text" class="form-control" id="origin" aria-describedby="originHelp" placeholder="Origin City"
+                        value="{{ origin }}"
+                    >
                     <small id="originHelp" class="form-text text-muted">The city of origin.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="destination">Destination</label>
-                    <input type="text" class="form-control" id="destination" aria-describedby="destinationHelp" placeholder="Destination City">
+                    <input type="text" class="form-control" id="destination" aria-describedby="destinationHelp" placeholder="Destination City"
+                        value="{{ destination }}"
+                    >
                     <small id="destinationHelp" class="form-text text-muted">The destination city.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="start_date">Departure Date and Time</label>
-                    <input type="datetime-local" value="2018-06-12T19:30" class="form-control" id="start_date" aria-describedby="start_dateHelp" placeholder="Departure Date and Time">
+                    <input type="datetime-local" value="{{ start_date }}" class="form-control" id="start_date" aria-describedby="start_dateHelp" placeholder="28-07-2022T18:18">
                     <small id="start_dateHelp" class="form-text text-muted">The departure date and time.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="end_date">Arrival Date and Time</label>
-                    <input type="datetime-local" value="2018-06-12T19:30" class="form-control" id="end_date" aria-describedby="end_dateHelp" placeholder="Arrival Date and Time">
+                    <input type="datetime-local" value="{{ end_date }}" class="form-control" id="end_date" aria-describedby="end_dateHelp" placeholder="28-07-2022T18:18">
                     <small id="end_dateHelp" class="form-text text-muted">The arrival date and time.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="train_type">Train Type</label>
-                    <input type="text" class="form-control" id="train_type" aria-describedby="train_typeHelp" placeholder="Train Type">
+                    <input type="text" class="form-control" id="train_type" aria-describedby="train_typeHelp" placeholder="Train Type"
+                        value="{{ train_type }}"
+                    >
                     <small id="train_typeHelp" class="form-text text-muted">The train type.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="train_class">Train Class</label>
-                    <input type="text" class="form-control" id="train_class" aria-describedby="train_classHelp" placeholder="Train Class">
+                    <input type="text" class="form-control" id="train_class" aria-describedby="train_classHelp" placeholder="Train Class"
+                        value="{{ train_class }}"
+                    >
                     <small id="train_classHelp" class="form-text text-muted">The train class.</small>
                   </div>
 
                   <div class="form-group">
                     <label for="fare">Fare</label>
-                    <input type="text" class="form-control" id="fare" aria-describedby="fareHelp" placeholder="Fare">
+                    <input type="text" class="form-control" id="fare" aria-describedby="fareHelp" placeholder="Fare"
+                        value="{{ fare }}"
+                    >
                     <small id="fareHelp" class="form-text text-muted">The fare.</small>
                   </div>
-                    
+
+                  <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" step="0.01" class="form-control" id="price" aria-describedby="priceHelp" placeholder="1.00"
+                        value="{{"{:0.2f}".format(price)}}"
+                    >
+                    <small id="priceHelp" class="form-text text-muted">The price.</small>
+                  </div>
+
                   <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
