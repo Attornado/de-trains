@@ -57,18 +57,20 @@ class Ticket:
     def start_date_as_int(self) -> int:
         # Format '%d/%m/%y %H:%M:%S.%f'
         try:
-            a = datetime.strptime(self.__start_date, '%d/%m/%Y')
+            a = datetime.strptime(self.__start_date, '%Y-%m-%d')
         except ValueError:
-            a = datetime.strptime(self.__start_date, '%d/%m/%Y %H:%M:%S.%f')
+
+            a = datetime.strptime(self.__start_date, '%Y-%m-%d %H:%M:%S')
+
         return int(a.timestamp())
 
     @property
     def end_date_as_int(self) -> int:
         # Format '%d/%m/%y %H:%M:%S.%f'
         try:
-            a = datetime.strptime(self.__end_date, '%d/%m/%Y')
+            a = datetime.strptime(self.__end_date, '%Y-%m-%d')
         except ValueError:
-            a = datetime.strptime(self.__end_date, '%d/%m/%Y %H:%M:%S.%f')
+            a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M:%S')
         return int(a.timestamp())
 
     @property

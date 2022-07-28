@@ -1,9 +1,8 @@
 from typing import Optional
-
 import pymongo
-
 from src.db_utils import get_db_connection, CONNECTION_STRING, DB_NAME, COLLECTION_NAME
 from src.tickets.ticket import Ticket
+import re
 
 
 def retrieve_and_check_ticket_by_id(origin: str, destination: str, start_date: str, end_date: str,
@@ -85,9 +84,11 @@ def retrieve_filter(origin: Optional[str] = None, destination: Optional[str] = N
     if destination is not None and destination != "":
         query['destination'] = destination
     if start_date is not None and start_date != "":
-        query['start_date'] = start_date
+        start_date_regex = re.compile(f"{start_date}.*", re.I)
+        query['start_date'] = {"$regex": start_date_regex}
     if end_date is not None and start_date != "":
-        query['end_date'] = end_date
+        end_date_regex = re.compile(f"{end_date}.*", re.I)
+        query['end_date'] = {"$regex": end_date_regex}
     if train_type is not None and train_type != "":
         query['train_type'] = train_type
     if train_class is not None and train_class != "":
@@ -96,8 +97,8 @@ def retrieve_filter(origin: Optional[str] = None, destination: Optional[str] = N
         query['fare'] = fare
     if max_price is not None and max_price != "":
         query['price'] = {"$lte": max_price}  # price must be less than or equal to max_price
-    if db_id is not None:
-        query['db_id'] = db_id
+    if db_id is not None and db_id != "":
+        query['id'] = db_id
 
     # Get results
     if offset is not None and limit is not None:

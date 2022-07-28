@@ -38,19 +38,6 @@ def index_truffle():
 def about():
     return render_template('./about.html')
 
-
-@app.route('/buy_product')
-@app.route('/buyProduct.html')
-def buy_product():
-    return render_template('./buyProduct.html')
-
-
-@app.route('/products')
-@app.route('/products.html')
-def products():
-    return render_template('./buyProduct.html')
-
-
 @app.route('/refund')
 @app.route('/refund.html')
 def refund():
