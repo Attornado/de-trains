@@ -308,6 +308,12 @@ def show_tickets():
         offset=offset,
         limit=limit
     )
+
+    admin_flag = False
+    if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
+        admin_flag = True
+        contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
+
     return render_template(
         './buy_product.html',
         tickets=results,
@@ -321,4 +327,5 @@ def show_tickets():
         max_price=max_price,
         train_class=train_class,
         db_id=db_id,
+        admin_flag=admin_flag
     )
