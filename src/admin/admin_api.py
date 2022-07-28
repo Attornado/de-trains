@@ -27,7 +27,24 @@ def show_product_form():
     insert = request.args.get('insert')
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
-        return render_template('./product_form.html', insert=insert, modify=modify)
+        if modify is not None:
+
+            return render_template(
+                './product_form.html',
+                insert=insert,
+                modify=modify,
+                origin = request.args.get('origin'),
+                destination = request.args.get('destination'),
+                start_date = request.args.get("start_date"),
+                end_date = request.args.get("end_date"),
+                train_type = request.args.get("train_type"),
+                train_class = request.args.get("train_class"),
+                fare = request.args.get("fare"),
+                price = float(request.args.get("price")),
+                db_id = int(request.args.get('db_id'))
+            )
+        else:
+            render_template('./product_form.html', insert=insert, modify=modify)
 
 
 @ADMIN_API.route("/admin/register_admin", methods=["GET"])
