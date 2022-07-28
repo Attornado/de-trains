@@ -70,6 +70,10 @@ def main():
     print(plot_stats(df, 'train_type', categorical=True, save_path=PLOT_DIR + "train_type.svg", show_plot=True))
     print(plot_stats(df, 'train_class', categorical=True, save_path=PLOT_DIR + "train_class.svg", show_plot=True))
     print(plot_stats(df, 'fare', categorical=True, save_path=PLOT_DIR + "fare.svg", show_plot=True))
+    print(plot_stats(df, 'start_date', categorical=False, save_path=PLOT_DIR + "start_date.svg", show_plot=True,
+                     rotation_label=45, date_column=True))
+    print(plot_stats(df, 'end_date', categorical=False, save_path=PLOT_DIR + "end_date.svg", show_plot=True,
+                     rotation_label=45, date_column=True))
     print(plot_stats(df, 'price', categorical=False, save_path=PLOT_DIR + "price.svg", show_plot=True))
 
     # Connection handling
