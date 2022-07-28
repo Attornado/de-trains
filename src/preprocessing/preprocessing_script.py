@@ -6,8 +6,11 @@ from src.db_utils import DB_NAME, COLLECTION_NAME, CONNECTION_STRING, get_db_con
 from src.preprocessing.utils import PLOT_DIR, csv_to_json, load_json, remove_columns, json_to_dataframe, plot_stats, \
     change_values, drop_null_values
 
+# Load dataset path
+with open("src/configurations.json") as file:
+    ORIGINAL_DATASET_DIR: final = json.load(file)['dataset_path']  # load dataset path
 
-ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
+#ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
 ORIGINAL_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\renfe.json"
 CLEANED_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\cleaned_renfe.json"
 _MAX_ROWS: final = 50000
