@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
-from src.contract_setup import web3
+from src.contract_setup import web3, contract
 from src.tickets.tickets_api import TICKETS_API
 from src.admin.admin_api import ADMIN_API
 
@@ -49,6 +49,10 @@ def login_private_key():
     web3.eth.defaultAccount = account.address
     global set_account_flag
     set_account_flag = True
+
+    is_admin = contract.functions.isAdmin(account=web3.eth.defaultAccount).call()
+    app.config['is_admin'] = is_admin
+
     return render_template('./index.html')
 
 
