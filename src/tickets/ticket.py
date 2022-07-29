@@ -59,10 +59,8 @@ class Ticket:
         try:
             a = datetime.strptime(self.__start_date, '%Y-%m-%d')
         except ValueError:
-            try:
-                a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M:%S')
-            except ValueError:
-                a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M')
+
+            a = datetime.strptime(self.__start_date, '%Y-%m-%d %H:%M:%S')
 
         return int(a.timestamp())
 
@@ -72,10 +70,7 @@ class Ticket:
         try:
             a = datetime.strptime(self.__end_date, '%Y-%m-%d')
         except ValueError:
-            try:
-                a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M:%S')
-            except ValueError:
-                a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M')
+            a = datetime.strptime(self.__end_date, '%Y-%m-%d %H:%M:%S')
         return int(a.timestamp())
 
     @property
