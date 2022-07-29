@@ -198,6 +198,12 @@ def retrieve_tickets():
     train_class = request.args.get("train_class")
     fare = request.args.get("fare")
 
+    if start_date is not None and start_date != "":
+        start_date = start_date.replace("T", " ")
+
+    if end_date is not None and end_date != "":
+        end_date = end_date.replace("T", " ")
+
     max_price = request.args.get("max_price")
     if max_price is not None and max_price != "":
         max_price = float(max_price)
@@ -256,6 +262,12 @@ def show_tickets():
     train_type = request.args.get("train_type")
     train_class = request.args.get("train_class")
     fare = request.args.get("fare")
+
+    if start_date is not None and start_date != "":
+        start_date = start_date.replace("T", " ")
+
+    if end_date is not None and end_date != "":
+        end_date = end_date.replace("T", " ")
 
     max_price = request.args.get("max_price")
     if max_price is not None and max_price != "":
