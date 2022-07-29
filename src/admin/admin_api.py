@@ -119,6 +119,12 @@ def insert_ticket_api():
     fare = request.args.get("fare")
     price = float(request.args.get("price"))
 
+    if start_date is not None and start_date != "":
+        start_date = start_date.replace("T", " ")
+
+    if end_date is not None and end_date != "":
+        end_date = end_date.replace("T", " ")
+
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
         try:
@@ -152,6 +158,12 @@ def update_ticket_api():
     train_class = request.args.get("train_class")
     fare = request.args.get("fare")
     db_id = int(request.args.get('db_id'))
+
+    if start_date is not None and start_date != "":
+        start_date = start_date.replace("T", " ")
+
+    if end_date is not None and end_date != "":
+        end_date = end_date.replace("T", " ")
 
     price = request.args.get("price")
     if price is not None and price != "":
