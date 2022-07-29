@@ -12,7 +12,7 @@ ADMIN_API = Blueprint('ADMIN_API', __name__)
 @ADMIN_API.route("/admin", methods=["GET"])
 def show_admin_page():
     # if not set_account_flag:
-    #    return jsonify({"message": "You are not logged in!"}), 400
+    # return jsonify({"message": "You are not logged in!"}), 400
     if contract.functions.isAdmin(account=web3.eth.defaultAccount).call():
         contract.functions.isAdmin(account=web3.eth.defaultAccount).transact()  # Notarization
         return render_template('./admin.html')

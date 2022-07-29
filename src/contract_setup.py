@@ -1,7 +1,6 @@
 from web3 import Web3, HTTPProvider
 import json
 
-
 # Truffle development blockchain address
 blockchain_address = 'http://127.0.0.1:7545'
 
@@ -9,7 +8,7 @@ blockchain_address = 'http://127.0.0.1:7545'
 web3 = Web3(HTTPProvider(blockchain_address, request_kwargs={'timeout': 60}))
 
 # Set the default account (so we don't need to set the "from" for every transaction call)
-web3.eth.defaultAccount = web3.eth.accounts[0]
+web3.eth.defaultAccount = web3.eth.accounts[0]  # this should be commented in real demo
 set_account_flag = False
 
 # Load contract address
