@@ -6,7 +6,7 @@ import json
 blockchain_address = 'http://127.0.0.1:7545'
 
 # Client instance to interact with the blockchain
-web3 = Web3(HTTPProvider(blockchain_address))
+web3 = Web3(HTTPProvider(blockchain_address, request_kwargs={'timeout': 60}))
 
 # Set the default account (so we don't need to set the "from" for every transaction call)
 web3.eth.defaultAccount = web3.eth.accounts[0]
