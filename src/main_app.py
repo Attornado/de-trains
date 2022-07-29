@@ -47,9 +47,6 @@ def login_private_key():
         return jsonify({"message": "Account login failed!"}), 400
 
     web3.eth.defaultAccount = account.address
-    global set_account_flag
-    set_account_flag = True
-
     is_admin = contract.functions.isAdmin(account=web3.eth.defaultAccount).call()
     app.config['is_admin'] = is_admin
 
@@ -65,8 +62,9 @@ def login_mnemonic():
         return jsonify({"message": "Account login failed!"}), 400
 
     web3.eth.defaultAccount = account.address
-    global set_account_flag
-    set_account_flag = True
+    is_admin = contract.functions.isAdmin(account=web3.eth.defaultAccount).call()
+    app.config['is_admin'] = is_admin
+
     return jsonify({"message": "Login successful!"}), 200
 
 
