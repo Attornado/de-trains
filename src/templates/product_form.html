@@ -10,7 +10,7 @@
             <div class="product-item">
                 <div class="d-flex product-item-title"></div>
                 {% set action = "/admin/update_ticket" if modify is not none else "/admin/insert_ticket" %}
-                <form style="color: white" action="{{ action }}" method="get">
+                <form id="form" style="color: white" action="{{ action }}" method="get">
                   <div class="form-group">
                     <label for="origin">Origin</label>
                     <input type="text" class="form-control" id="origin" name="origin" aria-describedby="originHelp" placeholder="Origin City"
@@ -69,14 +69,14 @@
                       <input type="number" step="0.01" class="form-control" id="price" name="price" aria-describedby="priceHelp" placeholder="1.00"
                         value="{{"{:0.2f}".format(price)}}">
                       {% else %}
-                      <input type="number" step="0.01" class="form-control" id="price" aria-describedby="priceHelp" placeholder="1.00" value="">
+                      <input type="number" step="0.01" class="form-control" id="price" name="price" aria-describedby="priceHelp" placeholder="1.00" value="">
                       {% endif %}
                     <small id="priceHelp" class="form-text text-muted">The price.</small>
                   </div>
 
                   <input hidden type="text" class="form-control" id="db_id" name="db_id" value="{{ db_id }}">
 
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button id="button" type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
@@ -98,7 +98,7 @@
     <script src="../static/assets/js/current-day.js"></script>
     <script src="../static/assets/js/formModifier.js"></script>
     <script src="../static/assets/js/adminPage.js"></script>
-    <!--<script src="../static/assets/js/date_picker.js"></script>-->
+    <script src="../static/assets/js/product_form.js"></script>
 </body>
 
 </html>
