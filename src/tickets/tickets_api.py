@@ -25,7 +25,7 @@ def generate_ticket_uri(ticket_json):
     filename = 'ticket' + str(tk_id) + '.json'
     with open(filename, 'w') as outfile:
         outfile.write(ticket_json)
-    api = ipfshttpclient.connect()
+    api = ipfshttpclient.connect() #"/dns/ipfs.infura.io/tcp/5001/https"
     res = api.add(filename)
     return 'https://ipfs.io/ipfs/' + res['Hash']
 
@@ -49,7 +49,7 @@ def generate_code_url(tk_id: int, origin: str, destination: str, start_date: str
     """
     # Dummy file
     filename = "src/static/assets/qr/qrcode.txt"
-    api = ipfshttpclient.connect()
+    api = ipfshttpclient.connect() #"/dns/ipfs.infura.io/tcp/5001/https"
     res = api.add(filename)
     return 'https://ipfs.io/ipfs/' + res['Hash']
 
