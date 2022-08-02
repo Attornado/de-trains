@@ -13,10 +13,6 @@ with open("src/configurations.json") as file:
     ORIGINAL_DATASET_DIR: final = config['dataset_path']  # load dataset path
     ORIGINAL_DATASET_DIR_JSON: final = config['dataset_json_original']
     CLEANED_DATASET_DIR_JSON: final = config["dataset_json_cleaned"]
-
-# ORIGINAL_DATASET_DIR: final = "D:\\datasets\\spanish_train\\renfe.csv"
-# ORIGINAL_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\renfe.json"
-# CLEANED_DATASET_DIR_JSON: final = "D:\\datasets\\spanish_train\\cleaned_renfe.json"
 _MAX_ROWS: final = 50000
 
 
