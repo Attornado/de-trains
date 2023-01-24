@@ -12,8 +12,8 @@
     <li>
       <a href="#about-the-project">About The Project</a>
     </li>
-    <li><a href="#license">License</a></li>
     <li><a href="#Main technologies">Main technologies</a></li>
+    <li><a href="#license">License</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
@@ -26,16 +26,9 @@
 Simple blockchain application to sell train tickets through Solidity smart contracts as NFTs.
 The application is provided with a NoSQL MongoDB database to store tickets to sell in the application.
 
+Here are some screenshots to show the application in use:
 
 ![Alt text](/app/assets/screenshot.png?raw=true)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -61,6 +54,22 @@ Front-end technologies:
 * [![Bootstrap][Bootstrap.com]][Bootstrap-url]
 * [![JQuery][JQuery.com]][JQuery-url]
 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Kaggle link to the dataset used to populate the application database for showcasing purposes](https://www.kaggle.com/datasets/thegurusteam/spanish-high-speed-rail-system-ticket-pricing/versions/2)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
