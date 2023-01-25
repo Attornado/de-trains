@@ -172,11 +172,11 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Numpy-url]: https://numpy.org/
 [Flask]: https://img.shields.io/badge/Flask-darkred?style=for-the-badge&logo=flask
 [Flask-url]: https://flask.palletsprojects.com/en/2.2.x/
-[Ganache]: https://svgshare.com/getbyhash/sha1-D2OyBM9Hbx25+PrYlWLCCIG+DVI=
+[Ganache]: https://svgshare.com/getbyhash/sha1-4Z5dD5/nHgiA9ULH6Jk1JgFiSBE=
 [Ganache-url]: https://flask.palletsprojects.com/en/2.2.x/
 [IPFS]: https://img.shields.io/badge/IPFS-154c79?style=for-the-badge&logo=ipfs
 [IPFS-url]: https://ipfs.tech/  
 [Ethereum]: https://img.shields.io/badge/Ethereum-76b5c5?style=for-the-badge&logo=ethereum&logoColor=black
 [Ethereum-url]: https://ethereum.org/en/
-[Matplotlib]: https://svgshare.com/getbyhash/sha1-butKwlJFe1t9Hp65XLskfuEkG8w=
+[Matplotlib]: https://svgshare.com/getbyhash/sha1-DUTrNq/OGl0noPQdTr2YgrvYhIw=
 [Matplotlib-url]: https://matplotlib.org/
