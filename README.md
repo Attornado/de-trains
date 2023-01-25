@@ -12,11 +12,11 @@
     <li>
         <a href="#about-the-project">About The Project</a>
         <ul>
-            <li><a href="#Homepage">Homepage</a></li>
+            <li><a href="#homepage">Homepage</a></li>
             <li><a href="#Login with Ethereum account or mnemonic phrase">Login</a></li>
             <li><a href="#Product page">Products</a></li>
             <li><a href="#Buying a ticket">Buying a ticket</a></li>
-            <li><a href="#Refund a ticket">Refund</a></li>
+            <li><a href="#refund a ticket">Refund</a></li>
             <li><a href="#Admin page">Admin page</a></li>
             <li><a href="#Edit a ticket">Edit a ticket</a></li>
             <li><a href="#Insert a ticket">Insert a ticket</a></li>
@@ -25,10 +25,10 @@
     <li>
         <a href="#Main technologies">Main technologies</a>
         <ul>
-            <li><a href="Blockchain-side technologies">Blockchain-side</a></li>
-            <li><a href="Data & visualization management technologies">Data & visualization</a></li>
-            <li><a href="Server-side technologies">Server-side</a></li>
-            <li><a href="Front-end technologies">Front-end</a></li>
+            <li><a href="#Blockchain-side technologies">Blockchain-side</a></li>
+            <li><a href="#Data & visualization management technologies">Data & visualization</a></li>
+            <li><a href="#Server-side technologies">Server-side</a></li>
+            <li><a href="#Front-end technologies">Front-end</a></li>
         </ul>
     </li>
     <li><a href="#license">License</a></li>
