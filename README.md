@@ -122,6 +122,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Acknowledgments
 
 * [Kaggle link to the dataset used to populate the application database for showcasing purposes](https://www.kaggle.com/datasets/thegurusteam/spanish-high-speed-rail-system-ticket-pricing/versions/2)
+* [Best-README template GitHub repository](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
