@@ -166,7 +166,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [MongoDB-url]: https://www.mongodb.com/
 [Pandas]: https://img.shields.io/badge/Pandas-red?style=for-the-badge&logo=pandas&logoWidth=15
 [Pandas-url]: https://pandas.pydata.org/
-[Truffle]: https://sendeyo.com/en/f74a818f91
+[Truffle]: https://svgshare.com/getbyhash/sha1-NX499/URB+khENlHOWdGS/+GJNw=
 [Truffle-url]: https://trufflesuite.com/
 [Numpy]: https://img.shields.io/badge/Numpy-blue?style=for-the-badge&logo=numpy
 [Numpy-url]: https://numpy.org/
