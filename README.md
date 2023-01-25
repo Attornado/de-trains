@@ -173,7 +173,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Flask]: https://img.shields.io/badge/Flask-darkred?style=for-the-badge&logo=flask
 [Flask-url]: https://flask.palletsprojects.com/en/2.2.x/
 [Ganache]: https://svgshare.com/getbyhash/sha1-4Z5dD5/nHgiA9ULH6Jk1JgFiSBE=
-[Ganache-url]: https://flask.palletsprojects.com/en/2.2.x/
+[Ganache-url]: https://trufflesuite.com/ganache/
 [IPFS]: https://img.shields.io/badge/IPFS-154c79?style=for-the-badge&logo=ipfs
 [IPFS-url]: https://ipfs.tech/  
 [Ethereum]: https://img.shields.io/badge/Ethereum-76b5c5?style=for-the-badge&logo=ethereum&logoColor=black
